@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Comment } from '@/entities/Comment';
-import { User } from '@/entities/User';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, MessageSquare, Send } from 'lucide-react';

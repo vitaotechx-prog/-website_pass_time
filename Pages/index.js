@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
-import FilterTabs from "../components/FilterTabs";
-import CategoryFilter from "../components/CategoryFilter";
+import FiltersTabs from "../components/FiltersTabs";
+import CategoryFilters from "../components/CategoryFilters";
 import CommunityLinks from "../components/CommunityLinks"; // Added import
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,7 +177,7 @@ export default function Home() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
-                    <FilterTabs 
+                    <FiltersTabs 
                         activeFilter={activeFilter} 
                         onFilterChange={setActiveFilter}
                     />
@@ -188,7 +188,7 @@ export default function Home() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <CategoryFilter 
+                    <CategoryFilters 
                         selectedCategory={selectedCategory}
                         onCategoryChange={setSelectedCategory}
                     />
