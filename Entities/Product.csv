@@ -1,0 +1,96 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nome do produto"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descrição do produto"
+    },
+    "price": {
+      "type": "number",
+      "description": "Preço do produto"
+    },
+    "original_price": {
+      "type": "number",
+      "description": "Preço original (antes do desconto)"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "URL da imagem do produto"
+    },
+    "affiliate_url": {
+      "type": "string",
+      "description": "Link de afiliado"
+    },
+    "store": {
+      "type": "string",
+      "enum": [
+        "amazon",
+        "mercadolivre",
+        "shopee",
+        "aliexpress",
+        "magalu",
+        "casasbahia",
+        "outros"
+      ],
+      "description": "Loja do produto"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "eletronicos",
+        "casa",
+        "moda",
+        "esporte",
+        "beleza",
+        "livros",
+        "games",
+        "automotivo",
+        "infantil",
+        "outros"
+      ],
+      "description": "Categoria do produto"
+    },
+    "has_coupon": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se tem cupom disponível"
+    },
+    "coupon_code": {
+      "type": "string",
+      "description": "Código do cupom"
+    },
+    "discount_percentage": {
+      "type": "number",
+      "description": "Porcentagem de desconto"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se é produto em destaque"
+    },
+    "is_alert": {
+      "type": "boolean",
+      "default": false,
+      "description": "Se é um alerta de preço"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Avaliação do produto"
+    }
+  },
+  "required": [
+    "name",
+    "price",
+    "image_url",
+    "affiliate_url",
+    "store",
+    "category"
+  ]
+}

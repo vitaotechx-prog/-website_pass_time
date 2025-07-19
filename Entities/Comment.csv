@@ -1,0 +1,23 @@
+{
+  "name": "Comment",
+  "type": "object",
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "description": "ID do produto ao qual o comentário pertence"
+    },
+    "content": {
+      "type": "string",
+      "description": "O conteúdo do comentário"
+    },
+    "user_name": {
+      "type": "string",
+      "description": "Nome do usuário que comentou"
+    }
+  },
+  "required": [
+    "product_id",
+    "content",
+    "user_name"
+  ]
+}
