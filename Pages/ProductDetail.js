@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Product } from "@/entities/Product";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Comments from "../components/Comments";
@@ -26,20 +25,26 @@ export default function ProductDetail() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            const { id: productId } = router.query;
-            if (productId) {
-                try {
-                    const fetchedProduct = await Product.get(productId); // Changed from Product.find to Product.get
-                    setProduct(fetchedProduct);
-                } catch (error) {
-                    console.error("Erro ao buscar produto:", error);
+    const fetchProduct = async () => {
+        if (router.query.id) { // Verifica se o ID já está disponível na URL
+            setLoading(true);
+            try {
+                const productId = router.query.id;
+                const response = await fetch(`/api/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Produto não encontrado');
                 }
+                const fetchedProduct = await response.json();
+                setProduct(fetchedProduct);
+            } catch (error) {
+                console.error("Erro ao buscar produto:", error);
+                setProduct(null); // Garante que nenhum produto antigo seja exibido
             }
             setLoading(false);
-        };
-        fetchProduct();
-    }, [router.query]);
+        }
+    };
+    fetchProduct();
+    }, [router.query.id]); // A dependência agora é o ID do produto na query
 
     if (loading) {
         return (

@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useCallback } from "react";
-import { Product } from "@/entities/Product";
 import ProductCard from "../components/ProductCard";
 import FilterTabs from "../components/FilterTabs";
 import CategoryFilter from "../components/CategoryFilter";
@@ -31,17 +30,34 @@ export default function Home() {
         applyFilters();
     }, [products, activeFilter, selectedCategory, searchQuery]);
 
-    const loadProducts = async () => {
+    const loadProducts = async (isLoadMore = false) => {
+    if (isLoadMore) {
+        setLoadingMore(true);
+    } else {
         setLoading(true);
-        try {
-            const response = await fetch('/api/products');
-            const data = await response.json();
-            setProducts(data);
-        } catch (error){
-            console.error("Erro ao carregar produtos", error);
+    }
+
+    try {
+        const response = await fetch('/api/products');
+        const allProducts = await response.json();
+
+        // A lógica de "load more" precisa ser adaptada,
+        // por enquanto vamos carregar todos de uma vez.
+        // Podemos refinar isso depois com paginação na API.
+        if (isLoadMore) {
+            // Esta parte não fará nada por enquanto, mas deixamos a estrutura
+            setHasMore(false);
+        } else {
+            setProducts(allProducts);
+            setHasMore(false); // Simplificado por agora
         }
-        setLoading(false);
-    };
+    } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+    }
+
+    setLoading(false);
+    setLoadingMore(false);
+};
 
     const applyFilters = useCallback(() => {
         let filtered = [...products];

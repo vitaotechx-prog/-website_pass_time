@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "@/entities/Product";
 import ProductCard from "../components/ProductCard";
 import { Loader2, Bell } from "lucide-react";
 import { motion } from "framer-motion";
@@ -13,14 +12,17 @@ export default function Alerts() {
     }, []);
 
     const loadProducts = async () => {
-        setLoading(true);
-        try {
-            const allProducts = await Product.filter({ is_alert: true }, "-created_date", 50);
-            setProducts(allProducts);
-        } catch (error) {
-            console.error("Erro ao carregar alertas:", error);
-        }
-        setLoading(false);
+    setLoading(true);
+    try {
+        const response = await fetch('/api/products');
+        const allProducts = await response.json();
+        // Filtra no lado do cliente
+        const alertProducts = allProducts.filter(p => p.is_alert);
+        setProducts(alertProducts);
+    } catch (error) {
+        console.error("Erro ao carregar alertas:", error);
+    }
+    setLoading(false);
     };
 
     if (loading) {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "@/entities/Product";
 import ProductCard from "../components/ProductCard";
 import CategoryFilter from "../components/CategoryFilter";
 import { Loader2, Grid3X3 } from "lucide-react";
@@ -20,15 +19,16 @@ export default function Categories() {
     }, [products]);
 
     const loadProducts = async () => {
-        setLoading(true);
-        try {
-            const allProducts = await Product.list("-created_date", 100);
-            setProducts(allProducts);
-        } catch (error) {
-            console.error("Erro ao carregar produtos:", error);
-        }
-        setLoading(false);
-    };
+    setLoading(true);
+    try {
+        const response = await fetch('/api/products');
+        const allProducts = await response.json();
+        setProducts(allProducts);
+    } catch (error) {
+        console.error("Erro ao carregar produtos:", error);
+    }
+    setLoading(false);
+};
 
     const calculateCategoryCounts = () => {
         const counts = {

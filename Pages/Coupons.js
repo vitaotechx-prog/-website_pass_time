@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "@/entities/Product";
 import ProductCard from "../components/ProductCard";
 import { Loader2, Tag } from "lucide-react";
 import { motion } from "framer-motion";
@@ -13,15 +12,18 @@ export default function Coupons() {
     }, []);
 
     const loadProducts = async () => {
-        setLoading(true);
-        try {
-            const allProducts = await Product.filter({ has_coupon: true }, "-created_date", 50);
-            setProducts(allProducts);
-        } catch (error) {
-            console.error("Erro ao carregar produtos com cupom:", error);
-        }
-        setLoading(false);
-    };
+    setLoading(true);
+    try {
+        const response = await fetch('/api/products');
+        const allProducts = await response.json();
+        // Filtra no lado do cliente
+        const couponProducts = allProducts.filter(p => p.has_coupon);
+        setProducts(couponProducts);
+    } catch (error) {
+        console.error("Erro ao carregar produtos com cupom:", error);
+    }
+    setLoading(false);
+};
 
     if (loading) {
         return (

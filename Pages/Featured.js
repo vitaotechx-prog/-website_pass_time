@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Product } from "@/entities/Product";
 import ProductCard from "../components/ProductCard";
-import { Loader2, Clock } from "lucide-react";
+import { Loader2, Star } from "lucide-react"; // Mudei o ícone
 import { motion } from "framer-motion";
 
-export default function Recent() {
+export default function Featured() { // Mudei para Featured
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -15,10 +14,13 @@ export default function Recent() {
     const loadProducts = async () => {
         setLoading(true);
         try {
-            const allProducts = await Product.list("-created_date", 50);
-            setProducts(allProducts);
+            const response = await fetch('/api/products');
+            const allProducts = await response.json();
+            // Filtra no lado do cliente
+            const featuredProducts = allProducts.filter(p => p.is_featured);
+            setProducts(featuredProducts);
         } catch (error) {
-            console.error("Erro ao carregar produtos:", error);
+            console.error("Erro ao carregar produtos em destaque:", error);
         }
         setLoading(false);
     };
