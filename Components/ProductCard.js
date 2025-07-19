@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star, Tag, ExternalLink, Zap, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/router";
 import { createPageUrl } from "@/utils";
 
 const storeColors = {
@@ -19,10 +19,10 @@ const storeColors = {
 };
 
 export default function ProductCard({ product, className = "" }) {
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const handleCardClick = () => {
-        navigate(createPageUrl(`ProductDetail?id=${product.id}`));
+        router.push(createPageUrl(`ProductDetail?id=${product.id}`));
     };
 
     const handleButtonClick = (e) => {

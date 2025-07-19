@@ -1,6 +1,7 @@
 
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { createPageUrl } from "@/utils";
 import { 
     Home, 
@@ -61,7 +62,7 @@ const SocialIcon = ({ href, children }) => (
 );
 
 export default function Layout({ children, currentPageName }) {
-    const location = useLocation();
+    const router = useRouter();
     const [searchQuery, setSearchQuery] = React.useState("");
 
     return (
@@ -87,7 +88,7 @@ export default function Layout({ children, currentPageName }) {
                                     key={item.title}
                                     to={item.url}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
-                                        location.pathname === item.url
+                                        router.pathname === item.url
                                             ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
                                             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                                     }`}
@@ -149,7 +150,7 @@ export default function Layout({ children, currentPageName }) {
                                                 key={item.title}
                                                 to={item.url}
                                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                                    location.pathname === item.url
+                                                    router.pathname === item.url
                                                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
                                                         : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                                                 }`}

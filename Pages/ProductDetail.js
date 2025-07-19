@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 import { Product } from "@/entities/Product";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Comments from "../components/Comments";
 import { Star, Tag, ExternalLink, Zap, Loader2, ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { createPageUrl } from "@/utils";
 
 const storeColors = {
@@ -21,14 +21,13 @@ const storeColors = {
 };
 
 export default function ProductDetail() {
-    const location = useLocation();
+    const router = useRouter();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProduct = async () => {
-            const params = new URLSearchParams(location.search);
-            const productId = params.get('id');
+            const { id: productId } = router.query;
             if (productId) {
                 try {
                     const fetchedProduct = await Product.get(productId); // Changed from Product.find to Product.get
@@ -40,7 +39,7 @@ export default function ProductDetail() {
             setLoading(false);
         };
         fetchProduct();
-    }, [location.search]);
+    }, [router.query]);
 
     if (loading) {
         return (
