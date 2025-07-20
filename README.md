@@ -104,8 +104,7 @@ Um **Guia de referências** rápida para os arquivos mais importantes do projeto
 |-----|-----|-----|
 | pages/_app.js | **Arquivo principal da aplicação.** Carrega estilos globais e o layout principal  para todas as páginas | Adicionar o \<Layout> para que todas as páginas tenham cabeçalho e rodapé.|
 |-----|-----|-----|
-| pages/index.js | **Página Inicial.** Contém a lógica para bucar e exibir a lista de produtos, 
-além de gerenciar os filtros | Onde o useEffect chama fetch('/aoi/products').
+| pages/index.js | **Página Inicial.** Contém a lógica para bucar e exibir a lista de produtos, além de gerenciar os filtros | Onde o useEffect chama fetch('/aoi/products').
 |-----|-----|-----|
 | pages/api/** | **O Back-End.** pontos de acesso(endpoints) que o front-end chama para interargir com o banco de dados. | pages/api/products/[id].js busca um produto especifico no Supabase. |
 |-----|-----|-----|
