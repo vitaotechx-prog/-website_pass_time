@@ -50,10 +50,10 @@ Diagrama React:
 
 ## Estrutura do Diagrama:
 
-    - Tudo começa no _app.js, que é o arquivo que define a estrutura geral.
-    - Ele carrega o Layout.js, que adiciona o cabeçalho e o rodapé.
-    - Dentro do Layout.js a página atual(index.js) é renderizada.
-    - A página index.js, por sua vez, é construida a partir de componebtes menores e          reutilizáveis, como os ProductCard e filtros.
+- Tudo começa no _app.js, que é o arquivo que define a estrutura geral.
+- Ele carrega o Layout.js, que adiciona o cabeçalho e o rodapé.
+- Dentro do Layout.js a página atual(index.js) é renderizada.
+- A página index.js, por sua vez, é construida a partir de componebtes menores e          reutilizáveis, como os ProductCard e filtros.
 
 # 3. Diagram de Fluxo de dados(full-Stack)
 
@@ -92,9 +92,9 @@ Este Diagrama ilustra o caminho completo que os dados percorrem, desde a solicit
 
 ## Estrutura do Diagrama:
 
-    - O Fluxo mostra que o **FrontEnd nunca acessa o Banco de Dados diretamente**. Isoo é crucial para a segurança, pois as chaves secretas do banco de dados ficam protegidas no BackEnd.
+- O Fluxo mostra que o **FrontEnd nunca acessa o Banco de Dados diretamente**. Isoo é crucial para a segurança, pois as chaves secretas do banco de dados ficam protegidas no BackEnd.
 
-    - O **BackEnd(API Routes)** atua como um porteiro, validando as solicitações e buscando as informacções necessárias.
+- O **BackEnd(API Routes)** atua como um porteiro, validando as solicitações e buscando as informacções necessárias.
 
 # 4. Dicionário de Arquivos e Funções
 
