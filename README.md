@@ -23,6 +23,7 @@ O site VitaoTech é uma aplicação web moderna construida com a Arquitetura JAM
 
 Este diagrama mostra como os principais componentes React se encaixam para formar a interface do site.
 
+Diagrama Ract:
     graph TD
         A["pages/_app.js (Molde Principal)"] --> B["Layout.js (Cabeçalho e Rodapé)"];
         B --> C["Páginas (ex: pages/index.js)"];
