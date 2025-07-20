@@ -23,25 +23,25 @@ O site VitaoTech é uma aplicação web moderna construida com a Arquitetura JAM
 
 Este diagrama mostra como os principais componentes React se encaixam para formar a interface do site.
 
- graph TD
-    A["pages/_app.js (Molde Principal)"] --> B["Layout.js (Cabeçalho e Rodapé)"];
-    B --> C["Páginas (ex: pages/index.js)"];
+    graph TD
+        A["pages/_app.js (Molde Principal)"] --> B["Layout.js (Cabeçalho e Rodapé)"];
+        B --> C["Páginas (ex: pages/index.js)"];
 
-    subgraph "Página Principal (index.js)"
-        C --> D[FilterTabs];
-        C --> E[CategoryFilter];
-        C --> F[ProductCard];
-        C --> G[CommunityLinks];
-    end
+        subgraph "Página Principal (index.js)"
+            C --> D[FilterTabs];
+            C --> E[CategoryFilter];
+            C --> F[ProductCard];
+            C --> G[CommunityLinks];
+        end
 
-    subgraph "Componentes de UI (components/ui)"
-        F --> H[Card];
-        F --> I[Button];
-        F --> J[Badge];
-        D --> I;
-        E --> I;
-    end
+        subgraph "Componentes de UI (components/ui)"
+            F --> H[Card];
+            F --> I[Button];
+            F --> J[Badge];
+            D --> I;
+            E --> I;
+        end
 
-    style A fill:#7e22ce,stroke:#fff,stroke-width:2px,color:#fff
-    style B fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
-    style C fill:#a855f7,stroke:#fff,stroke-width:2px,color:#fff
+        style A fill:#7e22ce,stroke:#fff,stroke-width:2px,color:#fff
+        style B fill:#9333ea,stroke:#fff,stroke-width:2px,color:#fff
+        style C fill:#a855f7,stroke:#fff,stroke-width:2px,color:#fff
