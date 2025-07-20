@@ -102,9 +102,25 @@ Um **Guia de referências** rápida para os arquivos mais importantes do projeto
 
 |Arquivos|Propósito|Exemplo de Uso|
 |-|-|-|
-|     pages/_app.js     | **Arquivo principal da        |   Adicionar o <Layout> para |
-|                       |aplicação.** Carrega estilos   |que todas as páginas tenham  |
-|                       |globais e o layout principal   |cabeçalho e rodapé.          |
-|                       |para todas as páginas.         |                             |
-||||
-| pages/index.js|**Página Inicial.** Contém a lógica para bucar e exibir a lista de produtos, além de gerenciar os filtros| Onde o useEffect chama fetch('/aoi/products').
+
+| pages/_app.js | **Arquivo principal da aplicação.** Carrega estilos globais e o layout principal  para todas as páginas | Adicionar o \<Layout>\ para que todas as páginas tenham cabeçalho e rodapé.|
+| | | |
+
+| pages/index.js|**Página Inicial.** Contém a lógica para bucar e exibir a lista de produtos, 
+além de gerenciar os filtros| Onde o useEffect chama fetch('/aoi/products').
+
+| pages/api/** | **O Back-End.** pontos de acesso(endpoints) que o front-end chama para interargir com o banco de dados. | \pages/api/products/[id].js\ busca um produto especifico no Supabase. |
+| | | |
+
+| components/** | **Componebtes Reutilizáveis.** Peças da interface que são usadas em várias páginas | ProductCard.js é usado na página inicial, na de categorias, etc.|
+
+|Layout.js | **Estrutura Visual Principal.** Define o cabeçalho, o rodapé e ode o conteúdo da pagina aerá inserido. | Contém a tag \<header>\ como logo e menu, e o \<footer>\.|
+
+| lib/supabaseClient.js | **Conexão com o Banco de Dados.** Onde a conexão com o Supabase é inicializada com as chaves de API. | É importatado pelos arquivos da pasta pages/api.|
+
+|.env.local | **As Chaves.** Aequivo para armazenar as chaves da API do Supabase de forma segura no ambiente local. Nunca deverá ser usada ou anexada ao projeto no github, assim como qualquer outro arquivo com dados sensível. Use .gitgnore para ignorar estes arquivos do projeto e comitar somente os arquivos necessarios. |  NEXT_PUBLIC_SUPABASE_URL=...|
+| tailwind.config.js | **Configuração do Tailwind.** Define as configurações de design e, crucialmente, informa ao Tailwind quais arquivos monitorar para gerar os estilos.| A seção content foi ajustada para incluir o Layout.js .|
+|-----|-----|-----|
+
+    # :relieved: Ufa! Quase tanat trabalho quanto codar a o site! :smile:
+    Acredito que tenha sido um bom trabalho, a documentação. KKKK 
