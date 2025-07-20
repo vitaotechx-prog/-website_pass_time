@@ -100,8 +100,8 @@ Este Diagrama ilustra o caminho completo que os dados percorrem, desde a solicit
 
 Um **Guia de referências** rápida para os arquivos mais importantes do projeto.
 
-|     Arquivos          |            Propósito          |       Exemplo de Uso
---------------------------------------------------------------------------------------|
+|Arquivos|Propósito|Exemplo de Uso|
+|-|-|-|
 |     pages/_app.js     | **Arquivo principal da        |   Adicionar o <Layout> para |
 |                       |aplicação.** Carrega estilos   |que todas as páginas tenham  |
 |                       |globais e o layout principal   |cabeçalho e rodapé.          |
