@@ -56,7 +56,7 @@ export default function CommunityLinks() {
             size="lg"
             className="bg-green-500 hover:bg-green-600 text-white font-bold text-lg px-8 py-6 rounded-xl transition-transform hover:scale-105"
           >
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://chat.whatsapp.com/LkwCdTmuBMs1CT7EC0lhH9" target="_blank" rel="noopener noreferrer">
               <WhatsAppIcon />
               <span className="ml-2">WhatsApp</span>
             </a>
@@ -66,7 +66,7 @@ export default function CommunityLinks() {
             size="lg"
             className="bg-sky-500 hover:bg-sky-600 text-white font-bold text-lg px-8 py-6 rounded-xl transition-transform hover:scale-105"
           >
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me/vitaopromo" target="_blank" rel="noopener noreferrer">
               <TelegramIcon />
               <span className="ml-2">Telegram</span>
             </a>
