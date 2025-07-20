@@ -106,4 +106,5 @@ Um **Guia de referências** rápida para os arquivos mais importantes do projeto
 |                       |aplicação.** Carrega estilos   |que todas as páginas tenham  |
 |                       |globais e o layout principal   |cabeçalho e rodapé.          |
 |                       |para todas as páginas.         |                             |
-                                                 
+||||
+| pages/index.js|**Página Inicial.** Contém a lógica para bucar e exibir a lista de produtos, além de gerenciar os filtros| Onde o useEffect chama fetch('/aoi/products').
