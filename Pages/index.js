@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Loader2, TrendingUp, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Home() {
+export default function index() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);

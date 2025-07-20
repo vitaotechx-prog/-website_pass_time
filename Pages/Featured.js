@@ -79,7 +79,7 @@ export default function Featured() { // Mudei para Featured
                     animate={{ opacity: 1 }}
                     className="text-center py-16"
                 >
-                    <Clock className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <Star className="w-16 h-16 text-gray-400 mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">
                         Nenhum produto recente
                     </h3>

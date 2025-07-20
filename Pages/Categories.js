@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import CategoryFilter from "../components/CategoryFilter";
+import CategoryFilter from "../components/CategoryFilters";
 import { Loader2, Grid3X3 } from "lucide-react";
 import { motion } from "framer-motion";
 

@@ -72,7 +72,7 @@ export default function Layout({ children, currentPageName }) {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
-                        <Link to={createPageUrl("Home")} className="flex items-center gap-3">
+                        <Link href={createPageUrl("home")} className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">V</span>
                             </div>
@@ -86,7 +86,7 @@ export default function Layout({ children, currentPageName }) {
                             {navigationItems.map((item) => (
                                 <Link
                                     key={item.title}
-                                    to={item.url}
+                                    href={item.url}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                                         router.pathname === item.url
                                             ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
@@ -148,7 +148,7 @@ export default function Layout({ children, currentPageName }) {
                                         {navigationItems.map((item) => (
                                             <Link
                                                 key={item.title}
-                                                to={item.url}
+                                                href={item.url}
                                                 className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                                                     router.pathname === item.url
                                                         ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
@@ -206,9 +206,9 @@ export default function Layout({ children, currentPageName }) {
                         <div>
                             <h3 className="font-semibold mb-4">Navegação</h3>
                             <ul className="space-y-2 text-gray-400">
-                                <li><Link to={createPageUrl("Categories")} className="hover:text-white transition-colors">Categorias</Link></li>
-                                <li><Link to={createPageUrl("Featured")} className="hover:text-white transition-colors">Destaques</Link></li>
-                                <li><Link to={createPageUrl("Coupons")} className="hover:text-white transition-colors">Cupons</Link></li>
+                                <li><Link href={createPageUrl("Categories")} className="hover:text-white transition-colors">Categorias</Link></li>
+                                <li><Link href={createPageUrl("Featured")} className="hover:text-white transition-colors">Destaques</Link></li>
+                                <li><Link href={createPageUrl("Coupons")} className="hover:text-white transition-colors">Cupons</Link></li>
                             </ul>
                         </div>
                         
@@ -225,10 +225,10 @@ export default function Layout({ children, currentPageName }) {
                         <div>
                             <h3 className="font-semibold mb-4">Comunidade & Ajuda</h3>
                             <ul className="space-y-2 text-gray-400">
-                                <li><Link to="#" className="hover:text-white transition-colors">Fórum</Link></li>
-                                <li><Link to="#" className="hover:text-white transition-colors">Blog</Link></li>
-                                <li><Link to="#" className="hover:text-white transition-colors">Perguntas Frequentes</Link></li>
-                                <li><Link to="#" className="hover:text-white transition-colors">Contate-nos</Link></li>
+                                <li><Link href="#" className="hover:text-white transition-colors">Fórum</Link></li>
+                                <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
+                                <li><Link href="#" className="hover:text-white transition-colors">Perguntas Frequentes</Link></li>
+                                <li><Link href="#" className="hover:text-white transition-colors">Contate-nos</Link></li>
                             </ul>
                         </div>
                     </div>
