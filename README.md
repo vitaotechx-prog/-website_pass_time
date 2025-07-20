@@ -120,5 +120,5 @@ além de gerenciar os filtros| Onde o useEffect chama fetch('/aoi/products').
 | tailwind.config.js | **Configuração do Tailwind.** Define as configurações de design e, crucialmente, informa ao Tailwind quais arquivos monitorar para gerar os estilos.| A seção content foi ajustada para incluir o Layout.js .|
 |-----|-----|-----|
 
-    # :relieved: Ufa! Quase tanat trabalho quanto codar a o site! :smile:
+    :relieved: Ufa! Quase tanat trabalho quanto codar a o site! :smile:
     Acredito que tenha sido um bom trabalho, a documentação. KKKK 
