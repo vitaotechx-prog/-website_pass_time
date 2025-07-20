@@ -119,5 +119,14 @@ Um **Guia de referências** rápida para os arquivos mais importantes do projeto
 | tailwind.config.js | **Configuração do Tailwind.** Define as configurações de design e, crucialmente, informa ao Tailwind quais arquivos monitorar para gerar os estilos.| A seção content foi ajustada para incluir o Layout.js.|
 |-----|-----|-----|
 
+
+# 5. Função compartilhar
+
+Adicionando a função compartilhar para facilitar o uso e aumentar o engajamento.
+- A função infor ao Next.js que este componente precisa da API do navegador (como window e navigator), então ele deve aer renderizado no lado do cliente.
+- Estilo: O botão terá um estilo sútil(ghost) e menor (icon), ideal para ficar dentro de um card sem chamar mais a atenção do que o botao principal.
+
+
+
     :relieved: Ufa! Quase tanto trabalho quanto codar a o site! :smile:
     Acredito que tenha sido um bom trabalho, a documentação. KKKK 

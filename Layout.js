@@ -3,6 +3,7 @@ import React from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { createPageUrl } from "@/utils";
+import ShareButton from "./components/ShareButton";
 import { 
     Home, 
     Grid3X3, 

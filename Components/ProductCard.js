@@ -7,6 +7,7 @@ import { Star, Tag, ExternalLink, Zap, MessageSquare } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { createPageUrl } from "@/utils";
+import ShareButton from './ShareButton';
 
 const storeColors = {
     amazon: "bg-orange-100 text-orange-800",
@@ -132,15 +133,21 @@ export default function ProductCard({ product, className = "" }) {
                         </div>
                     </div>
 
-                    {/* Action button */}
-                    <Button 
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg mt-auto"
-                        onClick={handleButtonClick}
-                    >
-                        <ExternalLink className="w-4 h-4 mr-2" />
-                        Ver Oferta
-                    </Button>
-                     <div className="text-center mt-2">
+                    {/* Action buttons */}
+                    <div className="flex items-center gap-2 mt-auto">
+                        <Button
+                            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
+                            onClick={handleButtonClick}
+                        >
+                            <ExternalLink className="w-4 h-4 mr-2" />
+                            Ver Oferta
+                        </Button>
+                        <ShareButton
+                            productName={product.name}
+                            productUrl={createPageUrl(`ProductDetail?id=${product.id}`)}
+                        />
+                    </div>
+                    <div className="text-center mt-2">
                         <span className="text-xs text-gray-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-1">
                             <MessageSquare className="w-3 h-3"/>
                             Ver detalhes e comentários
