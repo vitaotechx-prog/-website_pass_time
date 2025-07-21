@@ -34,6 +34,7 @@ export default function Categories() {
         const counts = {
             all: products.length,
             eletronicos: 0,
+            eletrodomesticos,
             casa: 0,
             moda: 0,
             esporte: 0,

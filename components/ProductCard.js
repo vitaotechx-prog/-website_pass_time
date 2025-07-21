@@ -27,7 +27,7 @@ export default function ProductCard({ product, className = "" }) {
     };
 
     const handleButtonClick = (e) => {
-        e.stopPropagation(); // Prevent the card's handleCardClick from firing
+        e.stopPropagation(); // Impede que o handleCardClick seja acionado
         window.open(product.affiliate_url, '_blank');
     };
 
@@ -52,7 +52,7 @@ export default function ProductCard({ product, className = "" }) {
                         className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     
-                    {/* Badges overlay */}
+                    {/* Emblemas overlay */}
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
                         {product.has_coupon && (
                             <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg">
@@ -76,7 +76,7 @@ export default function ProductCard({ product, className = "" }) {
                         )}
                     </div>
 
-                    {/* Discount badge */}
+                    {/* Emblema de desconto */}
                     {discountPercentage > 0 && (
                         <div className="absolute top-3 right-3">
                             <Badge className="bg-gradient-to-r from-red-600 to-pink-600 text-white font-bold shadow-lg">
@@ -85,7 +85,7 @@ export default function ProductCard({ product, className = "" }) {
                         </div>
                     )}
 
-                    {/* Store badge */}
+                    {/* Store Emblemas */}
                     <div className="absolute bottom-3 right-3">
                         <Badge className={`${storeColors[product.store]} font-medium`}>
                             {product.store.toUpperCase()}
@@ -137,8 +137,7 @@ export default function ProductCard({ product, className = "" }) {
                     <div className="flex items-center gap-2 mt-auto">
                         <Button
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
-                            onClick={handleButtonClick}
-                        >
+                            onClick={handleButtonClick}>
                             <ExternalLink className="w-4 h-4 mr-2" />
                             Ver Oferta
                         </Button>
