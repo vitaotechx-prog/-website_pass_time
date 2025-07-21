@@ -4,6 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { 
     Smartphone, 
     Home, 
+    Tv2,
+    REFRIGERATOR,
     Shirt, 
     Dumbbell, 
     Sparkles, 
@@ -12,10 +14,12 @@ import {
     Car, 
     Baby,
     Grid3X3
+
 } from "lucide-react";
 
 const categoryIcons = {
     eletronicos: Smartphone,
+    eletrodomesticos: Tv2,
     casa: Home,
     moda: Shirt,
     esporte: Dumbbell,
@@ -29,7 +33,8 @@ const categoryIcons = {
 
 const categoryLabels = {
     eletronicos: "Eletrônicos",
-    casa: "Casa & Jardim",
+    eletrodomesticos : "Eletrodomésticos",
+    casa: "Casa & Construção",
     moda: "Moda",
     esporte: "Esporte",
     beleza: "Beleza",
