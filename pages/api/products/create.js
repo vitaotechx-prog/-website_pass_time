@@ -36,5 +36,5 @@ try {
 
 }catch (error) {
     console.error('Erro ao inserir produto:', error);
-    return res.status(500).jason({error: 'Erro interno do servidor ao criar produto.'});
+    return res.status(500).json({error: 'Erro interno do servidor ao criar produto.'});
 }
