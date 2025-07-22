@@ -5,7 +5,6 @@ import {
     Smartphone, 
     Home, 
     Tv2,
-    REFRIGERATOR,
     Shirt, 
     Dumbbell, 
     Sparkles, 

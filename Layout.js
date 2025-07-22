@@ -1,9 +1,7 @@
-
 import React from "react";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { createPageUrl } from "@/utils";
-import ShareButton from "./components/ShareButton";
 import { 
     Home, 
     Grid3X3, 
@@ -12,7 +10,6 @@ import {
     Tag, 
     Bell,
     Menu,
-    X,
     Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,37 +18,40 @@ import {
     Sheet,
     SheetContent,
     SheetTrigger,
+    SheetClose // Importe o SheetClose para fechar o menu ao clicar
 } from "@/components/ui/sheet";
+import ShareButton from "./components/ShareButton";
 
+// Corrigindo os URLs para apontar para os arquivos corretos em /pages
 const navigationItems = [
     {
         title: "Início",
-        url: createPageUrl("Home"),
+        url: "/", // A página inicial é a raiz
         icon: Home,
     },
     {
         title: "Categorias",
-        url: createPageUrl("Categories"),
+        url: "/Categories",
         icon: Grid3X3,
     },
     {
         title: "Recentes",
-        url: createPageUrl("Recent"),
+        url: "/Recent",
         icon: Clock,
     },
     {
         title: "Destaques",
-        url: createPageUrl("Featured"),
+        url: "/Featured",
         icon: Star,
     },
     {
         title: "Cupons",
-        url: createPageUrl("Coupons"),
+        url: "/Coupons",
         icon: Tag,
     },
     {
         title: "Alertas",
-        url: createPageUrl("Alerts"),
+        url: "/Alerts",
         icon: Bell,
     },
 ];
@@ -62,18 +62,27 @@ const SocialIcon = ({ href, children }) => (
     </a>
 );
 
-export default function Layout({ children, currentPageName }) {
+export default function Layout({ children }) {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = React.useState("");
 
+    // Lógica para a busca (exemplo)
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchQuery.trim()) {
+            // Redireciona para a página inicial com o parâmetro de busca
+            router.push(`/?search=${encodeURIComponent(searchQuery)}`);
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Header */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="container mx-auto px-4">
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
-                        <Link href={createPageUrl("home")} className="flex items-center gap-3">
+                        <Link href="/" className="flex items-center gap-3">
                             <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">V</span>
                             </div>
@@ -90,7 +99,7 @@ export default function Layout({ children, currentPageName }) {
                                     href={item.url}
                                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${
                                         router.pathname === item.url
-                                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                                            ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-md'
                                             : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                                     }`}
                                 >
@@ -100,9 +109,9 @@ export default function Layout({ children, currentPageName }) {
                             ))}
                         </nav>
 
-                        {/* Search Bar */}
-                        <div className="hidden lg:flex items-center gap-4 flex-1 max-w-md mx-8">
-                            <div className="relative w-full">
+                        {/* Ações do Header (Busca, Compartilhar, Menu Mobile) */}
+                        <div className="flex items-center gap-2">
+                            <form onSubmit={handleSearch} className="hidden lg:flex relative w-full max-w-xs">
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                                 <Input
                                     placeholder="Buscar produtos..."
@@ -110,84 +119,75 @@ export default function Layout({ children, currentPageName }) {
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     className="pl-10 bg-gray-50 border-gray-200 focus:bg-white"
                                 />
+                            </form>
+                            
+                            <div className="hidden md:flex">
+                                <ShareButton p />
                             </div>
-                        </div>
 
-                        {/* Mobile Menu */}
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon" className="md:hidden">
-                                    <Menu className="w-5 h-5" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="right" className="w-80">
-                                <div className="flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-8">
-                                        <div className="flex items-center gap-3">
+                            {/* Mobile Menu Trigger */}
+                            <Sheet>
+                                <SheetTrigger asChild>
+                                    <Button variant="ghost" size="icon" className="md:hidden">
+                                        <Menu className="w-5 h-5" />
+                                    </Button>
+                                </SheetTrigger>
+                                <SheetContent side="right" className="w-full max-w-xs p-6">
+                                    <div className="flex flex-col h-full">
+                                        <div className="flex items-center gap-3 mb-8">
                                             <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                                                 <span className="text-white font-bold">V</span>
                                             </div>
-                                            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                                VitaoTech
-                                            </span>
+                                            <span className="text-xl font-bold">VitaoTech</span>
+                                        </div>
+                                        
+                                        {/* Mobile Navigation Links */}
+                                        <nav className="flex flex-col space-y-2">
+                                            {navigationItems.map((item) => (
+                                                <SheetClose asChild key={item.title}>
+                                                    <Link
+                                                        href={item.url}
+                                                        className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                                                            router.pathname === item.url
+                                                                ? 'bg-blue-100 text-blue-700'
+                                                                : 'text-gray-600 hover:bg-gray-100'
+                                                        }`}
+                                                    >
+                                                        <item.icon className="w-5 h-5" />
+                                                        {item.title}
+                                                    </Link>
+                                                </SheetClose>
+                                            ))}
+                                        </nav>
+
+                                        <div className="mt-auto">
+                                            <ShareButton />
                                         </div>
                                     </div>
-                                    
-                                    {/* Mobile Search */}
-                                    <div className="relative mb-6">
-                                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                                        <Input
-                                            placeholder="Buscar produtos..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="pl-10"
-                                        />
-                                    </div>
-
-                                    {/* Mobile Navigation */}
-                                    <nav className="flex flex-col space-y-2">
-                                        {navigationItems.map((item) => (
-                                            <Link
-                                                key={item.title}
-                                                href={item.url}
-                                                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                                                    router.pathname === item.url
-                                                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
-                                                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
-                                                }`}
-                                            >
-                                                <item.icon className="w-5 h-5" />
-                                                {item.title}
-                                            </Link>
-                                        ))}
-                                    </nav>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
+                                </SheetContent>
+                            </Sheet>
+                        </div>
                     </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="min-h-screen">
+            <main className="flex-grow container mx-auto px-4">
                 {children}
             </main>
 
             {/* Footer */}
             <footer className="bg-gray-900 text-white mt-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <div className="col-span-1 md:col-span-2">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div className="col-span-1 md:col-span-1">
                             <div className="flex items-center gap-3 mb-4">
                                 <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                                     <span className="text-white font-bold text-lg">V</span>
                                 </div>
                                 <span className="text-2xl font-bold">VitaoTech</span>
                             </div>
-                            <p className="text-gray-400 mb-4">
-                                As melhores ofertas e promoções em tecnologia. 
-                                Encontre produtos com os melhores preços e cupons de desconto.
-                            </p>
+
                             <div className="flex space-x-6 mt-6">
                                 <SocialIcon href="#">
                                     <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.28C8.28,9.09 5.11,7.38 2.9,4.79C2.53,5.42 2.33,6.15 2.33,6.94C2.33,8.43 3.11,9.75 4.26,10.54C3.55,10.51 2.88,10.31 2.3,10.03C2.3,10.05 2.3,10.06 2.3,10.08C2.3,12.25 3.84,14.08 5.91,14.49C5.58,14.58 5.22,14.62 4.85,14.62C4.59,14.62 4.34,14.6 4.1,14.56C4.66,16.34 6.25,17.62 8.12,17.65C6.59,18.84 4.7,19.52 2.67,19.52C2.34,19.52 2,19.5 1.67,19.45C3.55,20.69 5.75,21.4 8.12,21.4C16,21.4 20.33,14.96 20.33,9.23C20.33,9.03 20.33,8.82 20.32,8.62C21.16,8.03 21.88,7.28 22.46,6Z"></path></svg>
@@ -203,7 +203,6 @@ export default function Layout({ children, currentPageName }) {
                                 </SocialIcon>
                             </div>
                         </div>
-                        
                         <div>
                             <h3 className="font-semibold mb-4">Navegação</h3>
                             <ul className="space-y-2 text-gray-400">
@@ -211,8 +210,7 @@ export default function Layout({ children, currentPageName }) {
                                 <li><Link href={createPageUrl("Featured")} className="hover:text-white transition-colors">Destaques</Link></li>
                                 <li><Link href={createPageUrl("Coupons")} className="hover:text-white transition-colors">Cupons</Link></li>
                             </ul>
-                        </div>
-                        
+                        </div>                        
                         <div>
                             <h3 className="font-semibold mb-4">Lojas Parceiras</h3>
                             <ul className="space-y-2 text-gray-400">
@@ -222,19 +220,16 @@ export default function Layout({ children, currentPageName }) {
                                 <li>AliExpress</li>
                             </ul>
                         </div>
-
                         <div>
-                            <h3 className="font-semibold mb-4">Comunidade & Ajuda</h3>
+                            <h3 className="font-semibold mb-4">Ajuda</h3>
                             <ul className="space-y-2 text-gray-400">
-                                <li><Link href="#" className="hover:text-white transition-colors">Fórum</Link></li>
-                                <li><Link href="#" className="hover:text-white transition-colors">Blog</Link></li>
                                 <li><Link href="#" className="hover:text-white transition-colors">Perguntas Frequentes</Link></li>
                                 <li><Link href="#" className="hover:text-white transition-colors">Contate-nos</Link></li>
                             </ul>
                         </div>
                     </div>
                     
-                    <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                    <div className="border-t border-gray-800 mt-5 pt-6 text-center text-gray-400">
                         <p>&copy; 2024 VitaoTech. Todos os direitos reservados.</p>
                     </div>
                 </div>
