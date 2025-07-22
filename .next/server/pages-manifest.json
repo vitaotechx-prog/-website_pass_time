@@ -2,10 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/": "pages/index.js",
-  "/Featured": "pages/Featured.js",
-  "/Categories": "pages/Categories.js",
-  "/Recent": "pages/Recent.js",
-  "/Alerts": "pages/Alerts.js",
-  "/api/products": "pages/api/products.js"
+  "/ProductDetail": "pages/ProductDetail.js",
+  "/": "pages/index.js"
 }

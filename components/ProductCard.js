@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { createPageUrl } from "@/utils";
 import ShareButton from './ShareButton';
+import { space } from "postcss/lib/list";
 
 const storeColors = {
     amazon: "bg-orange-100 text-orange-800",
@@ -41,16 +42,16 @@ export default function ProductCard({ product, className = "" }) {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ y: -4 }}
             transition={{ duration: 0.2 }}
-            className={className}
-        >
+            className={className}>
+
+            {/* Imagens e Emblemas ou Badges AQUI!!!*/}
             <Card className="group cursor-pointer border-0 shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden bg-white h-full flex flex-col"
                   onClick={handleCardClick}>
                 <div className="relative">
                     <img 
                         src={product.image_url} 
                         alt={product.name}
-                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+                        className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"/>
                     
                     {/* Emblemas overlay */}
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
@@ -117,31 +118,31 @@ export default function ProductCard({ product, className = "" }) {
                         </div>
                     )}
 
-                    {/* Price */}
-                    <div className="flex items-center justify-between my-3">
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-2">
-                                <span className="text-2xl font-bold text-green-600">
-                                    R$ {product.price.toFixed(2).replace('.', ',')}
-                                </span>
-                            </div>
-                            {product.original_price && product.original_price > product.price && (
-                                <span className="text-sm text-gray-500 line-through">
-                                    R$ {product.original_price.toFixed(2).replace('.', ',')}
-                                </span>
-                            )}
-                        </div>
+                    {/* Price */}{/* Troca do Botão "Ver Ofertas" por Pagina dedicada ao produto e all-card-link. Exceto Tag Loja, talvez remover,está meio sem sentido
+                        Parece contra intuitivo deixar em um botão só o card com as informações, TESTAR*/}
+                    <div className="flex flex-col my-4">
+                        <span className="text-2xl font-bold text-green-600">
+                            R$ {product.price.toFixed(2).replace('.', ',')}
+                        </span>
+                        {product.original_price && product.original_price > product.price && (
+                        <span className="text-sm text-gray-500 line-through">
+                            R$ {product.original_price.toFixed(2).replace('.', ',')}
+                        </span>
+                        )}
                     </div>
-
-                    {/* Action buttons */}
+                    <div className="mt-auto pt-2 border-t border-gray text-center">
+                        <span className="text-sm font-semibold text-blue-600 group-hover:underline">
+                           Ver Detalhes e Comentarios
+                    </span>
+                    
+                    {/* Action buttons ********
                     <div className="flex items-center gap-2 mt-auto">
                         <Button
                             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg"
                             onClick={handleButtonClick}>
                             <ExternalLink className="w-4 h-4 mr-2" />
-                            Ver Oferta
                         </Button>
-                        <ShareButton
+                        <ShareButton /* Share Button usando integracão local desktop e mobile
                             productName={product.name}
                             productUrl={createPageUrl(`ProductDetail?id=${product.id}`)}
                         />
@@ -149,8 +150,9 @@ export default function ProductCard({ product, className = "" }) {
                     <div className="text-center mt-2">
                         <span className="text-xs text-gray-500 hover:text-blue-600 transition-colors flex items-center justify-center gap-1">
                             <MessageSquare className="w-3 h-3"/>
-                            Ver detalhes e comentários
                         </span>
+                    </div>*/}
+                    
                     </div>
                 </CardContent>
             </Card>
