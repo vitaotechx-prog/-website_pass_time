@@ -3,5 +3,13 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/ProductDetail": "pages/ProductDetail.js"
+  "/ProductDetail": "pages/ProductDetail.js",
+  "/api/products/[id]": "pages/api/products/[id].js",
+  "/api/comments/[productId]": "pages/api/comments/[productId].js",
+  "/Categories": "pages/Categories.js",
+  "/Recent": "pages/Recent.js",
+  "/Featured": "pages/Featured.js",
+  "/Coupons": "pages/Coupons.js",
+  "/Alerts": "pages/Alerts.js",
+  "/api/products": "pages/api/products.js"
 }
