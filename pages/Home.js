@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
 import FilterTabs from "../components/FilterTabs";
-import CategoryFilter from "../components/CategoryFilters";
+import CategoryFilters from "../components/CategoryFilters";
 import CommunityLinks from "../components/CommunityLinks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -96,7 +96,7 @@ export default function Home({ initialProducts }) {
             {/* Filtros */}
             <div className="space-y-6 mb-8">
                 <FilterTabs activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-                <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
+                <CategoryFilters selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
             </div>
 
             {/* Grid de Produtos */}
