@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
 import FilterTabs from "../components/FiltersTabs";
-import CategoryFilter from "../components/CategoryFilters";
 import CommunityLinks from "../components/CommunityLinks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,7 +38,6 @@ export default function Home({ initialProducts }) {
     
     // O resto dos estados para os filtros continua o mesmo
     const [activeFilter, setActiveFilter] = useState("all");
-    const [selectedCategory, setSelectedCategory] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
 
     // 3. LÓGICA DE FILTROS (NO NAVEGADOR)
@@ -61,12 +59,6 @@ export default function Home({ initialProducts }) {
                     break;
             }
         }
-
-        // Filtro por categoria
-        if (selectedCategory !== "all") {
-            filtered = filtered.filter(p => p.category === selectedCategory);
-        }
-
         // Filtro por busca de texto
         if (searchQuery.trim()) {
             const query = searchQuery.toLowerCase().trim();
@@ -76,7 +68,7 @@ export default function Home({ initialProducts }) {
         }
 
         setFilteredProducts(filtered);
-    }, [initialProducts, activeFilter, selectedCategory, searchQuery]);
+    }, [initialProducts, activeFilter, searchQuery]);
 
     const handleSearchSubmit = (e) => {
         e.preventDefault();
@@ -96,7 +88,6 @@ export default function Home({ initialProducts }) {
             {/* Filtros */}
             <div className="space-y-6 mb-8">
                 <FilterTabs activeFilter={activeFilter} onFilterChange={setActiveFilter} />
-                <CategoryFilter selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
             </div>
 
             {/* Grid de Produtos */}

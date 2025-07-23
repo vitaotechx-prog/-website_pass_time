@@ -2,11 +2,11 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/Categories": "pages/Categories.js",
-  "/Recent": "pages/Recent.js",
   "/": "pages/index.js",
-  "/api/products": "pages/api/products.js",
+  "/Recent": "pages/Recent.js",
+  "/Categories": "pages/Categories.js",
   "/Alerts": "pages/Alerts.js",
+  "/Coupons": "pages/Coupons.js",
   "/Featured": "pages/Featured.js",
-  "/Coupons": "pages/Coupons.js"
+  "/api/products": "pages/api/products.js"
 }
