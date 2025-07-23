@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
-import FilterTabs from "../components/FilterTabs";
+import FilterTabs from "../components/FiltersTabs";
 import CategoryFilter from "../components/CategoryFilters";
 import CommunityLinks from "../components/CommunityLinks";
 import { Button } from "@/components/ui/button";
