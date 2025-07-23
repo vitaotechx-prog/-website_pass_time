@@ -10,7 +10,8 @@ import {
     Tag, 
     Bell,
     Menu,
-    Search
+    Search,
+    LogIn
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,6 +22,7 @@ import {
     SheetClose // Importe o SheetClose para fechar o menu ao clicar
 } from "@/components/ui/sheet";
 import ShareButton from "./components/ShareButton";
+import { useAuth } from "./components/AuthContext";
 
 // Corrigindo os URLs para apontar para os arquivos corretos em /pages
 const navigationItems = [
@@ -65,6 +67,8 @@ const SocialIcon = ({ href, children }) => (
 export default function Layout({ children }) {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = React.useState("");
+    const { user, signOut} = useAuth(); // Hook de autentificação
+
 
     // Lógica para a busca (exemplo)
     const handleSearch = (e) => {
@@ -75,7 +79,7 @@ export default function Layout({ children }) {
         }
     };
 
-    return (
+return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Header */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -83,11 +87,11 @@ export default function Layout({ children }) {
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
-                            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">V</span>
-                            </div>
-                            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                VitaoTech
+                                </div>
+                                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                    VitaoTech
                             </span>
                         </Link>
 
@@ -109,22 +113,28 @@ export default function Layout({ children }) {
                             ))}
                         </nav>
 
-                        {/* Ações do Header (Busca, Compartilhar, Menu Mobile) */}
-                        <div className="flex items-center gap-2">
-                            <form onSubmit={handleSearch} className="hidden lg:flex relative w-full max-w-xs">
-                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                                <Input
-                                    placeholder="Buscar produtos..."
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="pl-10 bg-gray-50 border-gray-200 focus:bg-white"
-                                />
-                            </form>
-                            
-                            <div className="hidden md:flex">
-                                <ShareButton p />
+                        {/* Ações do Header (Login/Logout e Menu Mobile) */}
+                        <div className="flex items-center gap-4">
+                            {/* NOVO: Lógica condicional de Login/Logout */}
+                            <div className="hidden md:flex items-center gap-3">
+                                {user ? (
+                                    <>
+                                        <span className="text-sm font-medium text-gray-600 truncate" title={user.email}>
+                                            {user.email}
+                                        </span>
+                                        <Button variant="outline" size="sm" onClick={signOut}>
+                                            Sair
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Link href="/Login" legacyBehavior>
+                                        <a className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                                            <LogIn className="mr-2 h-4 w-4" /> Entrar
+                                        </a>
+                                    </Link>
+                                )}
                             </div>
-
+                            
                             {/* Mobile Menu Trigger */}
                             <Sheet>
                                 <SheetTrigger asChild>
@@ -132,7 +142,7 @@ export default function Layout({ children }) {
                                         <Menu className="w-5 h-5" />
                                     </Button>
                                 </SheetTrigger>
-                                <SheetContent side="right" className="w-full max-w-xs p-6">
+                                <SheetContent side="right" className="w-full max-w-xs p-6 flex flex-col">
                                     <div className="flex flex-col h-full">
                                         <div className="flex items-center gap-3 mb-8">
                                             <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
@@ -159,17 +169,35 @@ export default function Layout({ children }) {
                                                 </SheetClose>
                                             ))}
                                         </nav>
-
-                                        <div className="mt-auto">
-                                            <ShareButton />
+                                            <div className="mt-auto border-t pt-4">
+                                            {user ? (
+                                                <div className="space-y-2 text-center">
+                                                    <Link href="/profile" className="text-sm font-medium text-gray-700 hover:underline">
+                                                        {user.email}
+                                                    </Link>
+                                                    <Button variant="outline" className="w-full" onClick={signOut}>
+                                                        Sair
+                                                    </Button>
+                                                </div>
+                                            ) : (
+                                                <SheetClose asChild>
+                                                    <Link href="/Login" className="w-full">
+                                                        <Button className="w-full">
+                                                            <LogIn className="mr-2 h-4 w-4" /> Entrar
+                                                        </Button>
+                                                    </Link>
+                                                </SheetClose>
+                                            )}
                                         </div>
                                     </div>
                                 </SheetContent>
+                                    
                             </Sheet>
                         </div>
                     </div>
                 </div>
             </header>
+                                        
 
             {/* Main Content */}
             <main className="flex-grow container mx-auto px-4">
