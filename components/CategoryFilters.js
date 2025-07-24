@@ -12,7 +12,10 @@ import {
     Gamepad2, 
     Car, 
     Baby,
-    Grid3X3
+    Grid3X3,
+    Drill,
+    ShoppingBasket,
+    Rocket
 
 } from "lucide-react";
 
@@ -26,21 +29,28 @@ const categoryIcons = {
     livros: BookOpen,
     games: Gamepad2,
     automotivo: Car,
+    ferramentas: Drill,
+    brinquedos: Rocket,
+    mercado: ShoppingBasket,
     infantil: Baby,
     outros: Grid3X3
+
 };
 
 const categoryLabels = {
     eletronicos: "Eletrônicos",
     eletrodomesticos : "Eletrodomésticos",
-    casa: "Casa & Construção",
+    casa: "Casa",
     moda: "Moda",
     esporte: "Esporte",
     beleza: "Beleza",
     livros: "Livros",
     games: "Games",
-    automotivo: "Automotivo",
+    brinquedos: "Brinquedos",
+    mercado: "Mercado",
     infantil: "Infantil",
+    automotivo: "Automotivo",
+    ferramentas: "Ferramentas",
     outros: "Outros"
 };
 

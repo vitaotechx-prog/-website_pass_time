@@ -43,7 +43,10 @@ export default function Categories() {
             games: 0,
             automotivo: 0,
             infantil: 0,
-            outros: 0
+            outros: 0,
+            feramentas: 0,
+            mercado: 0,
+            brinquedos: 0
         };
 
         products.forEach(product => {
@@ -80,7 +83,7 @@ export default function Categories() {
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center mb-12"
             >
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent mb-4">
                     Categorias
                 </h1>
                 <p className="text-xl text-gray-600">
