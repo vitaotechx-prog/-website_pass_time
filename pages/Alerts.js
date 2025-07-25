@@ -1,92 +1,136 @@
-import React, { useState, useEffect } from "react";
-import ProductCard from "../components/ProductCard";
-import { Loader2, Bell } from "lucide-react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/components/AuthContext';
+import { supabase } from '@/lib/supabaseClient'; // Acesso direto para simplificar
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { BellRing, Trash2, Loader2, Tag } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-export default function Alerts() {
-    const [products, setProducts] = useState([]);
+// Componente para exibir um único alerta na lista
+function AlertItem({ alert, onDelete }) {
+    return (
+        <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="flex items-center justify-between p-4 border rounded-lg bg-white shadow-sm">
+            <div>
+                <p className="font-semibold text-gray-800">{alert.search_term}</p>
+                <p className="text-sm text-gray-500">Notificação por: {alert.notification_method}</p>
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => onDelete(alert.id)}>
+                <Trash2 className="w-4 h-4 text-red-500" />
+            </Button>
+        </motion.div>
+    );
+}
+
+export default function AlertsPage() {
+    const { user } = useAuth();
+    const [searchTerm, setSearchTerm] = useState('');
+    const [alerts, setAlerts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
+    // Busca os alertas existentes do usuário
     useEffect(() => {
-        loadProducts();
-    }, []);
+        const fetchAlerts = async () => {
+            if (!user) {
+                setLoading(false);
+                return;
+            }
+            const { data, error } = await supabase
+                .from('product_alerts')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
 
-    const loadProducts = async () => {
-    setLoading(true);
-    try {
-        const response = await fetch('/api/products');
-        const allProducts = await response.json();
-        // Filtra no lado do cliente
-        const alertProducts = allProducts.filter(p => p.is_alert);
-        setProducts(alertProducts);
-    } catch (error) {
-        console.error("Erro ao carregar alertas:", error);
-    }
-    setLoading(false);
+            if (error) setError('Não foi possível carregar seus alertas.');
+            else setAlerts(data);
+            setLoading(false);
+        };
+        fetchAlerts();
+    }, [user]);
+
+    // Função para criar um novo alerta
+    const handleCreateAlert = async (e) => {
+        e.preventDefault();
+        if (!searchTerm.trim()) return;
+
+        const { data, error } = await supabase
+            .from('product_alerts')
+            .insert({ search_term: searchTerm, user_id: user.id, notification_method: 'email' })
+            .select();
+
+        if (error) {
+            setError('Erro ao criar o alerta.');
+        } else {
+            setAlerts([data[0], ...alerts]);
+            setSearchTerm('');
+        }
     };
 
-    if (loading) {
+    // Função para deletar um alerta
+    const handleDeleteAlert = async (alertId) => {
+        const { error } = await supabase
+            .from('product_alerts')
+            .delete()
+            .eq('id', alertId);
+
+        if (error) {
+            setError('Erro ao deletar o alerta.');
+        } else {
+            setAlerts(alerts.filter(alert => alert.id !== alertId));
+        }
+    };
+
+    if (!user) {
         return (
-            <div className="container mx-auto px-4 py-8">
-                <div className="flex items-center justify-center min-h-64">
-                    <div className="text-center">
-                        <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-                        <p className="text-gray-600">Carregando alertas...</p>
-                    </div>
-                </div>
+            <div className="text-center py-20">
+                <BellRing className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h2 className="text-2xl font-bold">Crie Alertas de Produtos</h2>
+                <p className="text-gray-600 mb-6">Faça login para ser notificado sobre as melhores ofertas.</p>
+                <Link href="/Login"><Button>Entrar ou Cadastrar-se</Button></Link>
             </div>
         );
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Header */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center mb-12"
-            >
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent mb-4">
-                    Alertas de Preço
-                </h1>
-                <p className="text-xl text-gray-600">
-                    Ofertas relâmpago e promoções por tempo limitado
-                </p>
-            </motion.div>
+        <div className="container mx-auto max-w-3xl py-12">
+            <h1 className="text-3xl font-bold mb-2">Meus Alertas de Produtos</h1>
+            <p className="text-gray-600 mb-8">Seja o primeiro a saber quando um produto que você deseja entrar em promoção.</p>
 
-            {/* Products Grid */}
-            {products.length > 0 ? (
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.2 }}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                >
-                    {products.map((product, index) => (
-                        <motion.div
-                            key={product.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                        >
-                            <ProductCard product={product} />
-                        </motion.div>
+            {/* Formulário para criar novo alerta */}
+            <form onSubmit={handleCreateAlert} className="flex gap-2 mb-8">
+                <Input
+                    type="text"
+                    placeholder="Ex: Monitor 4K, Air Fryer, RTX 4090..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="flex-grow"
+                />
+                <Button type="submit">
+                    <BellRing className="w-4 h-4 mr-2" />
+                    Criar Alerta
+                </Button>
+            </form>
+
+            {error && <Alert variant="destructive" className="mb-4"><AlertDescription>{error}</AlertDescription></Alert>}
+
+            {/* Lista de alertas existentes */}
+            <h2 className="text-xl font-semibold mb-4">Seus Alertas Ativos</h2>
+            {loading ? (
+                <div className="text-center"><Loader2 className="w-8 h-8 animate-spin mx-auto" /></div>
+            ) : alerts.length > 0 ? (
+                <div className="space-y-4">
+                    {alerts.map(alert => (
+                        <AlertItem key={alert.id} alert={alert} onDelete={handleDeleteAlert} />
                     ))}
-                </motion.div>
+                </div>
             ) : (
-                <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center py-16"
-                >
-                    <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                        Nenhum alerta no momento
-                    </h3>
-                    <p className="text-gray-600">
-                        Fique ligado! Em breve teremos alertas especiais aqui!
-                    </p>
-                </motion.div>
+                <div className="text-center py-10 border-2 border-dashed rounded-lg">
+                    <Tag className="w-12 h-12 text-gray-300 mx-auto mb-2" />
+                    <p className="text-gray-500">Você ainda não tem nenhum alerta criado.</p>
+                </div>
             )}
         </div>
     );

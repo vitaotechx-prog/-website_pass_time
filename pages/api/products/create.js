@@ -17,21 +17,44 @@ export default async function handler(req, res) {
   // --- LOG DETALHADO ---
   console.log("API RECEBEU DADOS DO BOT:", JSON.stringify(productData, null, 2));
 
-  try {
-    const { data, error } = await supabase
-      .from('products')
-      .insert([productData])
-      .select();
+    try {
+      const { data: newProductData, error } = await supabase
+          .from('products')
+          .insert([productData])
+          .select();
 
-    if (error) {
-      // --- LOG DO ERRO ESPECÍFICO DO SUPABASE ---
-      console.error('ERRO DO SUPABASE:', error);
-      throw error;
-    }
+      if (error) throw error;
 
-    return res.status(201).json({ message: 'Produto criado com sucesso!', product: data[0] });
+      const newProduct = newProductData[0];
+      console.log('Produto criado com sucesso!', newProduct.id);
 
-  } catch (error) {
+      // --- LÓGICA DE NOTIFICAÇÃO DE ALERTA ---
+      const productName = newProduct.name.toLowerCase();
+
+      // Busca por alertas cujo 'search_term' esteja contido no nome do novo produto
+      const { data: matchingAlerts, error: alertError } = await supabase
+          .from('product_alerts')
+          .select(`
+              search_term,
+              profiles ( id, email ) 
+          `)
+          .filter('is_active', 'eq', true)
+          .ilike('search_term', `%${productName.split(' ')[0]}%`); // Exemplo simples de busca
+          // Para uma busca mais avançada, pode-se usar full-text search do Postgres
+
+      if (alertError) {
+          console.error("Erro ao buscar alertas:", alertError);
+      } else if (matchingAlerts && matchingAlerts.length > 0) {
+          console.log(`Encontrados ${matchingAlerts.length} alertas para o produto ${newProduct.name}`);
+
+          // Aqui entraria a lógica para enviar o e-mail
+          // Ex: await sendEmailNotification(matchingAlerts, newProduct);
+      }
+      // --- FIM DA LÓGICA DE NOTIFICAÇÃO ---
+
+      return res.status(201).json({ message: 'Produto criado com sucesso!', product: newProduct });
+    
+  }catch (error) {
     // Retorna o erro específico do Supabase no response para facilitar a depuração
     return res.status(500).json({ 
         error: 'Erro interno do servidor ao criar produto.',
