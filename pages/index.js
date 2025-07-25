@@ -1,3 +1,4 @@
+import Layout from '../Layout';
 import React, { useState, useEffect, useCallback } from "react";
 import ProductCard from "../components/ProductCard";
 import FilterTabs from "../components/FiltersTabs";
@@ -123,4 +124,10 @@ export default function Home({ initialProducts }) {
             {/* O botão "Carregar Mais" foi removido pois agora carregamos tudo de uma vez no servidor */}
         </div>
     );
+}
+
+Home.getLayout = function getLayout(page) {
+  return (
+    <Layout>{page}</Layout>
+  )
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { createPageUrl } from "@/utils";
+import { useRouter } from 'next/router';
+import { useAuth } from "@/contexts/AuthContext";
 import { 
     Home, 
     Grid3X3, 
@@ -10,52 +11,38 @@ import {
     Tag, 
     Bell,
     Menu,
-    Search,
-    LogIn
+    LogIn,
+    Edit,
+    LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
     Sheet,
     SheetContent,
     SheetTrigger,
-    SheetClose // Importe o SheetClose para fechar o menu ao clicar
+    SheetClose
 } from "@/components/ui/sheet";
-import ShareButton from "./components/ShareButton";
-import { useAuth } from "./components/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/components/ui/avatar";
 
-// Corrigindo os URLs para apontar para os arquivos corretos em /pages
 const navigationItems = [
-    {
-        title: "Início",
-        url: "/", // A página inicial é a raiz
-        icon: Home,
-    },
-    {
-        title: "Categorias",
-        url: "/Categories",
-        icon: Grid3X3,
-    },
-    {
-        title: "Recentes",
-        url: "/Recent",
-        icon: Clock,
-    },
-    {
-        title: "Destaques",
-        url: "/Featured",
-        icon: Star,
-    },
-    {
-        title: "Cupons",
-        url: "/Coupons",
-        icon: Tag,
-    },
-    {
-        title: "Alertas",
-        url: "/Alerts",
-        icon: Bell,
-    },
+    { title: "Início", url: "/", icon: Home },
+    { title: "Categorias", url: "/Categories", icon: Grid3X3 },
+    { title: "Recentes", url: "/Recent", icon: Clock },
+    { title: "Destaques", url: "/Featured", icon: Star },
+    { title: "Cupons", url: "/Coupons", icon: Tag },
+    { title: "Alertas", url: "/Alerts", icon: Bell },
 ];
 
 const SocialIcon = ({ href, children }) => (
@@ -66,8 +53,10 @@ const SocialIcon = ({ href, children }) => (
 
 export default function Layout({ children }) {
     const router = useRouter();
-    const [searchQuery, setSearchQuery] = React.useState("");
-    const { user, signOut} = useAuth(); // Hook de autentificação
+    const { user, profile, signOut } = useAuth();
+
+    // Determina a inicial do avatar
+    const userInitial = profile?.full_name?.charAt(0) || user?.email?.charAt(0) || '?';
 
 
     // Lógica para a busca (exemplo)
@@ -79,7 +68,7 @@ export default function Layout({ children }) {
         }
     };
 
-return (
+    return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Header */}
             <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
@@ -87,11 +76,11 @@ return (
                     <div className="flex justify-between items-center h-16">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
-                           <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+                            <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
                                 <span className="text-white font-bold text-lg">V</span>
-                                </div>
-                                <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                                    VitaoTech
+                            </div>
+                            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                                VitaoTech
                             </span>
                         </Link>
 
@@ -115,61 +104,70 @@ return (
 
                         {/* Ações do Header (Login/Logout e Menu Mobile) */}
                         <div className="flex items-center gap-4">
-                            {/* NOVO: Lógica condicional de Login/Logout */}
                             <div className="hidden md:flex items-center gap-3">
                                 {user ? (
-                                    <>
-                                        <span className="text-sm font-medium text-gray-600 truncate" title={user.email}>
-                                            {user.email}
-                                        </span>
-                                        <Button variant="outline" size="sm" onClick={signOut}>
-                                            Sair
-                                        </Button>
-                                    </>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                                                <Avatar>
+                                                    <AvatarImage src={profile?.avatar_url} alt={profile?.full_name || user.email} />
+                                                    <AvatarFallback>{userInitial.toUpperCase()}</AvatarFallback>
+                                                </Avatar>
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-56" align="end" forceMount>
+                                            <DropdownMenuLabel className="font-normal">
+                                                <div className="flex flex-col space-y-1">
+                                                    <p className="text-sm font-medium leading-none">{profile?.full_name || 'Usuário'}</p>
+                                                    <p className="text-xs leading-none text-muted-foreground truncate">{user.email}</p>
+                                                </div>
+                                            </DropdownMenuLabel>
+                                            <DropdownMenuSeparator />
+                                            <Link href="/profile">
+                                                <DropdownMenuItem className="cursor-pointer">
+                                                    <Edit className="mr-2 h-4 w-4" />
+                                                    <span>Editar Perfil</span>
+                                                </DropdownMenuItem>
+                                            </Link>
+                                            <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                                                <LogOut className="mr-2 h-4 w-4" />
+                                                <span>Sair</span>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 ) : (
-                                    <Link href="/Login" legacyBehavior>
-                                        <a className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2">
+                                    <Link href="/Login">
+                                        <Button>
                                             <LogIn className="mr-2 h-4 w-4" /> Entrar
-                                        </a>
+                                        </Button>
                                     </Link>
                                 )}
                             </div>
                             
-                            {/* Mobile Menu Trigger */}
-                            <Sheet>
+                                {/* Mobile Menu Trigger */}
+                                <Sheet>
                                 <SheetTrigger asChild>
                                     <Button variant="ghost" size="icon" className="md:hidden">
                                         <Menu className="w-5 h-5" />
                                     </Button>
                                 </SheetTrigger>
                                 <SheetContent side="right" className="w-full max-w-xs p-6 flex flex-col">
-                                    <div className="flex flex-col h-full">
-                                        <div className="flex items-center gap-3 mb-8">
-                                            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
-                                                <span className="text-white font-bold">V</span>
-                                            </div>
-                                            <span className="text-xl font-bold">VitaoTech</span>
-                                        </div>
-                                        
-                                        {/* Mobile Navigation Links */}
-                                        <nav className="flex flex-col space-y-2">
-                                            {navigationItems.map((item) => (
-                                                <SheetClose asChild key={item.title}>
-                                                    <Link
-                                                        href={item.url}
-                                                        className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
-                                                            router.pathname === item.url
-                                                                ? 'bg-blue-100 text-blue-700'
-                                                                : 'text-gray-600 hover:bg-gray-100'
-                                                        }`}
-                                                    >
-                                                        <item.icon className="w-5 h-5" />
-                                                        {item.title}
-                                                    </Link>
-                                                </SheetClose>
-                                            ))}
-                                        </nav>
-                                            <div className="mt-auto border-t pt-4">
+                                    <nav className="flex flex-col space-y-2">
+                                        {navigationItems.map((item) => (
+                                            <SheetClose asChild key={item.title}>
+                                                <Link
+                                                    href={item.url}
+                                                    className={`flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium ${
+                                                        router.pathname === item.url ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'
+                                                    }`}
+                                                >
+                                                    <item.icon className="w-5 h-5" />
+                                                    {item.title}
+                                                </Link>
+                                            </SheetClose>
+                                        ))}
+                                    </nav>
+                                    <div className="mt-auto border-t pt-4">
                                             {user ? (
                                                 <div className="space-y-2 text-center">
                                                     <Link href="/profile" className="text-sm font-medium text-gray-700 hover:underline">
@@ -189,9 +187,7 @@ return (
                                                 </SheetClose>
                                             )}
                                         </div>
-                                    </div>
                                 </SheetContent>
-                                    
                             </Sheet>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 // pages/Login.js
+import Layout from '../Layout'; // Importe o Layout no topo
 import { useState } from 'react';
-import { useAuth } from '@/components/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -128,4 +129,9 @@ export default function LoginPage() {
       </div>
     </div>
   );
+}
+LogIn.getLayout = function getLayout(page) {
+  return (
+    <Layout>{page}</Layout>
+  )
 }

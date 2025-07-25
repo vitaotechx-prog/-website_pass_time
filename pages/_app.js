@@ -1,16 +1,19 @@
-// pages/_app.js
 import Layout from '../Layout';
 import '@/styles/globals.css';
-import { AuthProvider } from '../components/AuthContext'; // Importe o AuthProvider
+import { AuthProvider } from '../contexts/AuthContext';
+import { Toaster } from "@/components/ui/toaster";
 
-function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <AuthProvider> {/* Envolva tudo com o AuthProvider */}
-      <Layout>
+  <AuthProvider>
+     <Layout>
         <Component {...pageProps} />
-      </Layout>
+     </Layout>
+
+     {/* O Toaster fica aqui para exibir as notificações */}
+     <Toaster />
     </AuthProvider>
   );
 }
 
-export default App;
+export default MyApp;

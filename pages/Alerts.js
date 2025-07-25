@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/components/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/lib/supabaseClient'; // Acesso direto para simplificar
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,7 @@ function AlertItem({ alert, onDelete }) {
 }
 
 export default function AlertsPage() {
-    const { user } = useAuth();
+    const { user, signOut } = useAuth();
     const [searchTerm, setSearchTerm] = useState('');
     const [alerts, setAlerts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,18 +38,27 @@ export default function AlertsPage() {
                 setLoading(false);
                 return;
             }
-            const { data, error } = await supabase
+            const { data, error: fetchError } = await supabase
                 .from('product_alerts')
                 .select('*')
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
 
-            if (error) setError('Não foi possível carregar seus alertas.');
-            else setAlerts(data);
+            // Lógica de erro aprimorada
+            if (fetchError) {
+                console.error("Erro ao buscar alertas:", fetchError);
+                setError('Não foi possível carregar seus alertas.');
+                // Se o erro for relacionado à segurança (ex: JWT inválido), deslogamos
+                if (fetchError.code === 'PGRST301') {
+                    signOut();
+                }
+            } else {
+                setAlerts(data);
+            }
             setLoading(false);
         };
         fetchAlerts();
-    }, [user]);
+    }, [user,signOut]);
 
     // Função para criar um novo alerta
     const handleCreateAlert = async (e) => {

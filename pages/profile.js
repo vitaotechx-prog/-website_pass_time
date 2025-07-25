@@ -1,6 +1,8 @@
+import Layout from '../Layout'; // Importe o Layout no topo
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/components/AuthContext';
+import { useAuth ,fetchProfile  } from '@/contexts/AuthContext';
 import { useRouter } from 'next/router';
+import { supabase } from '@/lib/supabaseClient'; // Importe o cliente Supabase
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -8,7 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 
 export default function ProfilePage() {
-    const { user } = useAuth();
+    const { user, fetchProfile } = useAuth();
     const router = useRouter();
 
     const [loading, setLoading] = useState(true);
@@ -22,25 +24,44 @@ export default function ProfilePage() {
             return;
         }
 
-        setLoading(true);
-        fetch('/api/profile')
-            .then(res => res.json())
-            .then(data => {
-                if (data) setFullName(data.full_name || '');
+       setLoading(true);
+        // Busca os dados do perfil diretamente do Supabase,
+        // o cliente já está autenticado.
+        supabase
+            .from('profiles')
+            .select('full_name')
+            .eq('id', user.id)
+            .single()
+            .then(({ data, error }) => {
+                if (error) {
+                    console.warn('Erro ao buscar perfil:', error);
+                } else if (data) {
+                    setFullName(data.full_name || '');
+                }
                 setLoading(false);
             });
     }, [user, router]);
 
     const handleUpdateProfile = async (e) => {
         e.preventDefault();
-        const response = await fetch('/api/profile', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ full_name: fullName }),
-        });
+        setMessage('');
 
-        const data = await response.json();
-        setMessage(data.message || data.error);
+        const { error } = await supabase
+            .from('profiles')
+            .update({ full_name: fullName, updated_at: new Date() })
+            .eq('id', user.id);
+
+        if (error) {
+            setMessage(`Erro ao atualizar: ${error.message}`);
+            // Se o erro indicar uma violação de chave estrangeira (usuário não existe)
+            if (error.code === '23503') { 
+                setMessage('Seu usuário não foi encontrado. Deslogando...');
+                setTimeout(() => signOut(), 2000); // Força o logout
+            }
+        } else {
+            setMessage('Perfil atualizado com sucesso!');
+            await fetchProfile(user); // <<--- CHAME A FUNÇÃO AQUI
+        }
     };
 
     if (!user || loading) {
@@ -69,4 +90,9 @@ export default function ProfilePage() {
             </form>
         </div>
     );
+}
+ProfilePage.getLayout = function getLayout(page) {
+  return (
+    <Layout>{page}</Layout>
+  )
 }
