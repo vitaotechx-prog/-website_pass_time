@@ -23,7 +23,12 @@ export default async function handler(req, res) {
       .insert({ product_id, category_id })
       .select();
 
-    if (error) throw error;
+    if (error) {
+        if (error.code === '23505') {
+          return res.status(200).json({ message: 'Ligação já existente.' });
+      }
+      throw error;
+    }
 
     return res.status(201).json({ message: 'Categoria associada com sucesso!', link: data[0] });
   } catch (error) {

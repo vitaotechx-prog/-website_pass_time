@@ -2,10 +2,9 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
+  "/Alerts": "pages/Alerts.js",
   "/Categories": "pages/Categories.js",
-  "/api/products": "pages/api/products.js",
-  "/Featured": "pages/Featured.js",
-  "/Coupons": "pages/Coupons.js",
-  "/Recent": "pages/Recent.js",
-  "/Alerts": "pages/Alerts.js"
+  "/": "pages/index.js",
+  "/profile": "pages/profile.js",
+  "/api/products": "pages/api/products.js"
 }
