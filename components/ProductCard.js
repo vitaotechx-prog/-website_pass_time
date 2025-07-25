@@ -4,7 +4,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Star, Tag, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from 'next/router';
-import { createPageUrl } from "@/utils";
+import { createPageUrl, timeAgo } from "@/utils"; //timeAgo
+import { Clock } from "lucide-react"; // Importe o ícone de relógio
 
 const storeColors = {
     amazon: "bg-orange-100 text-orange-800",
@@ -28,6 +29,8 @@ export default function ProductCard({ product }) {
         ? Math.round(((product.original_price - product.price) / product.original_price) * 100)
         : null;
 
+    const postedTime = timeAgo(product.created_at); // Chama a nova função timeAgo
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -44,6 +47,7 @@ export default function ProductCard({ product }) {
                         alt={product.name}
                         className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
+
                     {/* Badges (cupom, destaque, etc.) */}
                     <div className="absolute top-3 left-3 flex flex-col gap-2">
                         {product.has_coupon && ( <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg"><Tag className="w-3 h-3 mr-1" />CUPOM</Badge> )}
@@ -75,6 +79,19 @@ export default function ProductCard({ product }) {
                                 R$ {product.original_price.toFixed(2).replace('.', ',')}
                             </span>
                         )}
+                    </div>
+
+                    {/* Indicador de ação no rodapé */}
+                    <div className="mt-auto pt-2 border-t border-gray-100 text-center">
+                        <span className="text-sm font-semibold text-blue-600 group-hover:underline">
+                            Ver Detalhes e Comentários
+                        </span>
+                    </div>
+
+                    {/* NOVO: Carimbo de Tempo */}
+                    <div className="flex items-center text-xs text-gray-500 mt-2">
+                        <Clock className="w-3 h-3 mr-1.5" />
+                        <span>Postado {postedTime}</span>
                     </div>
 
                     {/* Indicador de ação no rodapé */}

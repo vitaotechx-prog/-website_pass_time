@@ -2,26 +2,31 @@ import { supabase } from '@/lib/supabaseClient';
 
 export default async function handler(req, res) {
   // 1. Verificar o método
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Método não permitido' });
-  }
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Método não permitido' });
+    }
 
-  // 2. Verificar o token
-  const authToken = req.headers.authorization;
-  if (authToken !== `Bearer ${process.env.BOT_SECRET_TOKEN}`) {
-    return res.status(401).json({ error: 'Acesso não autorizado' });
-  }
+    // 2. Verificar o token
+    const authToken = req.headers.authorization;
+    if (authToken !== `Bearer ${process.env.BOT_SECRET_TOKEN}`) {
+      return res.status(401).json({ error: 'Acesso não autorizado' });
+    }
 
-  const productData = req.body;
-  
-  // --- LOG DETALHADO ---
-  console.log("API RECEBEU DADOS DO BOT:", JSON.stringify(productData, null, 2));
+    const productData = req.body;
+    
+    // --- LOG DETALHADO ---
+    console.log("API RECEBEU DADOS DO BOT:", JSON.stringify(productData, null, 2));
+
+    if (!productData.name || !productData.price || !productData.affiliate_url) {
+      return res.status(400).json({ error: 'Dados incompletos do produto' });
+    }
 
     try {
-      const { data: newProductData, error } = await supabase
-          .from('products')
-          .insert([productData])
-          .select();
+    const { data, error } = await supabase
+      .from('products')
+      .insert([productData])
+      .select()
+      .single(); // Retorna o objeto único
 
       if (error) throw error;
 

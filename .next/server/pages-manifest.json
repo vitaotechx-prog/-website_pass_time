@@ -3,10 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/Alerts": "pages/Alerts.js",
-  "/Coupons": "pages/Coupons.js",
-  "/Featured": "pages/Featured.js",
-  "/Recent": "pages/Recent.js",
-  "/api/products": "pages/api/products.js",
-  "/Categories": "pages/Categories.js"
+  "/Categories": "pages/Categories.js",
+  "/Coupons": "pages/Coupons.js"
 }

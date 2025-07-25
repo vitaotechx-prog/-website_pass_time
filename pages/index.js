@@ -13,7 +13,7 @@ import { supabase } from '@/lib/supabaseClient';
 export async function getStaticProps() {
   const { data: products, error } = await supabase
     .from('products')
-    .select('*')
+    .select('*, categories (id, name)') //Alteração aqui * busca tudo em products id, name busca dados da tabela categories
     .order('created_at', { ascending: false });
 
   if (error) {
