@@ -93,13 +93,6 @@ export default function ProductCard({ product }) {
                         <Clock className="w-3 h-3 mr-1.5" />
                         <span>Postado {postedTime}</span>
                     </div>
-
-                    {/* Indicador de ação no rodapé */}
-                    <div className="mt-auto pt-2 border-t border-gray-100 text-center">
-                        <span className="text-sm font-semibold text-blue-600 group-hover:underline">
-                            Ver Detalhes e Comentários
-                        </span>
-                    </div>
                 </CardContent>
             </Card>
         </motion.div>

@@ -4,7 +4,5 @@
   "/_document": "pages/_document.js",
   "/Alerts": "pages/Alerts.js",
   "/Categories": "pages/Categories.js",
-  "/": "pages/index.js",
-  "/profile": "pages/profile.js",
-  "/api/products": "pages/api/products.js"
+  "/profile": "pages/profile.js"
 }

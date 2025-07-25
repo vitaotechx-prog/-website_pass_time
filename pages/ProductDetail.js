@@ -87,7 +87,12 @@ export default function ProductDetail() {
                 <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
                     <Badge className={`${storeColors[product.store]} font-medium mb-2`}>{product.store?.toUpperCase()}</Badge>
                     <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-                    <p className="text-gray-600 mb-6">{product.description || "Descrição não disponível."}</p>
+                    {/* ADICIONE ESTE BLOCO PARA EXIBIR A DESCRIÇÃO/COMENTÁRIO */}
+                    {product.description && (
+                        <p className="text-gray-600 mb-6 bg-gray-50 p-4 rounded-lg border">
+                            {product.description}
+                        </p>
+                    )}
                     
                     {/* Preço */}
                     <div className="mb-6">
@@ -96,6 +101,10 @@ export default function ProductDetail() {
                             <span className="text-lg text-gray-500 line-through ml-3">R$ {product.original_price.toFixed(2).replace('.', ',')}</span>
                         )}
                     </div>
+                        {/* ADICIONE O AVISO DE PREÇO AQUI */}
+                    <p className="text-xs text-gray-500 mb-4">
+                        *O preço e a disponibilidade da oferta podem ser alterados a qualquer momento pela loja.
+                    </p>    
 
                     {/* Botões de Ação */}
                     <div className="flex items-center gap-3">
