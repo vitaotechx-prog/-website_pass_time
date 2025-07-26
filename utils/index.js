@@ -12,23 +12,30 @@ export const createPageUrl = (pageName) => {
  * @returns {string} O tempo formatado (ex: "há 5 horas", "há 3 dias").
  */
 export function timeAgo(dateString) {
-  if (!dateString) return '';
+  if (!dateString) return 'data indisponível'; // Evita o erro se a data for nula
 
   const now = new Date();
   const past = new Date(dateString);
+  
+  // Verifica se a data é válida
+  if (isNaN(past.getTime())) {
+    return 'data inválida';
+  }
+
   const secondsPast = (now.getTime() - past.getTime()) / 1000;
 
   if (secondsPast < 60) {
-    return 'agora mesmo';
+    return 'há poucos segundos';
   }
   if (secondsPast < 3600) {
-    return `há ${Math.round(secondsPast / 60)} minutos`;
+    const minutes = Math.round(secondsPast / 60);
+    return `há ${minutes} minuto${minutes > 1 ? 's' : ''}`;
   }
-  if (secondsPast <= 86400) { // 86400 segundos = 24 horas
+  if (secondsPast <= 86400) {
     const hours = Math.round(secondsPast / 3600);
     return `há ${hours} hora${hours > 1 ? 's' : ''}`;
   }
-
+  
   const days = Math.round(secondsPast / 86400);
   return `há ${days} dia${days > 1 ? 's' : ''}`;
 }
