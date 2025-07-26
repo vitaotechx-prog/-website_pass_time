@@ -89,6 +89,7 @@ export default function ProductCard({ product }) {
                         </div>
                         <div className="text-center">
                             <span className="text-sm font-semibold text-blue-600 group-hover:underline">
+                            
                                 Ver Detalhes e Comentários
                             </span>
                         </div>

@@ -87,7 +87,7 @@ export default function ProductDetail() {
                 <motion.div initial={{ opacity: 0, x: 50 }} animate={{ opacity: 1, x: 0 }}>
                     <Badge className={`${storeColors[product.store]} font-medium mb-2`}>{product.store?.toUpperCase()}</Badge>
                     <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">{product.name}</h1>
-                    {/* ADICIONE ESTE BLOCO PARA EXIBIR A DESCRIÇÃO/COMENTÁRIO */}
+                    {/* ADICIONEI ESTE BLOCO PARA EXIBIR A DESCRIÇÃO/COMENTÁRIO */}
                     {product.description && (
                         <p className="text-gray-600 mb-6 bg-gray-50 p-4 rounded-lg border">
                             {product.description}

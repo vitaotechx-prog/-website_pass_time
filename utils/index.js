@@ -11,6 +11,7 @@ export const createPageUrl = (pageName) => {
  * @param {string} dateString - A data em formato de string (ex: "2024-07-25T10:00:00Z").
  * @returns {string} O tempo formatado (ex: "há 5 horas", "há 3 dias").
  */
+
 export function timeAgo(dateString) {
   if (!dateString) return 'data indisponível'; // Evita o erro se a data for nula
 

@@ -33,9 +33,7 @@ export default async function handler(req, res) {
     return res.status(201).json({ message: 'Categoria associada com sucesso!', link: data[0] });
   } catch (error) {
     // Se o erro for de violação de chave primária (23505), significa que a ligação já existe.
-    if (error.code === '23505') {
-        return res.status(200).json({ message: 'Ligação já existente.' });
-    }
+    
     console.error('Erro ao associar categoria:', error);
     return res.status(500).json({ error: 'Erro interno do servidor ao associar categoria.' });
   }

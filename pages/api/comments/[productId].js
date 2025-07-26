@@ -15,15 +15,21 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    const { content, user_name } = req.body;
-    const { data, error } = await supabase
+    // Obter user autenticado
+    const { data: { user }, error: userError } = await  supabase.auth.getUser();
+    if (userError || !user) {
+      return res.status(401).json({ error: 'Acesso não autorizado.' });
+    } 
+    // Usar user.id para criar comentário
+    const { content } = req.body; // Apenas o conteúdo  é necessario do corpo da requisição
+    const {data, error } = await supabase
       .from('comments')
-      .insert([{ product_id: productId, content, user_name }]);
-
-    if (error) return res.status(500).json({ error: error.message });
-    return res.status(201).json(data);
+      .insert([{
+        productId: productId, content,
+        user_id: user_id // Usa o id do user da sessão
+         // O user_name será associado via JOIN com a tabela profiles na hora de buscar os comentários
+      }]);
+  if (error) return res.status(500).json({error: error.message});
+  return res.status(201).json(data);
   }
-
-  res.setHeader('Allow', ['GET', 'POST']);
-  res.status(405).end(`Method ${req.method} Not Allowed`);
 }
