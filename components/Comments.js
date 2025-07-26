@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'; // Importar o useRouter para redirecionar
+import { useAuth } from '@/contexts/AuthContext'; // Importar o hook de autenticação
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, MessageSquare, Send } from 'lucide-react';
@@ -9,28 +11,26 @@ export default function Comments({ productId }) {
     const [newComment, setNewComment] = useState('');
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
-    const [user, setUser] = useState(null);
+    
+    // Correção: Usar o hook useAuth para obter o usuário e o perfil
+    const { user, profile } = useAuth(); 
+    const router = useRouter(); // Instanciar o router
 
-    useEffect(() => {
-        const checkUserAndLoadComments = async () => {
-            try {
-                const currentUser = await User.me();
-                setUser(currentUser);
-            } catch (error) {
-                setUser(null);
-            }
-            loadComments();
-        };
-        checkUserAndLoadComments();
-    }, [productId]);
-
+    // Função para buscar os comentários associados aos perfis
     const loadComments = async () => {
         setLoading(true);
-        const response = await fetch('/api/comments/${productId}');
+        const response = await fetch(`/api/comments/${productId}`);
         const fetchedComments = await response.json();
         setComments(fetchedComments);
         setLoading(false);
     };
+
+    useEffect(() => {
+        if (productId) {
+            loadComments();
+        }
+    }, [productId]);
+
 
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
@@ -38,16 +38,15 @@ export default function Comments({ productId }) {
 
         setSubmitting(true);
         try {
-            await fetch('/api/comments/${productId}', {
+            // A API agora usa o token do usuário para identificá-lo
+            await fetch(`/api/comments/${productId}`, {
                 method: 'POST',
                 headers : {'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: newComment,
-                        user_name: user.full_name || 'Anônimo',
-                    }),
-                });
-                setNewComment('');
-                loadComments(); //Recarrega os comentarios
+                // Não é mais necessário enviar o user_name
+                body: JSON.stringify({ content: newComment }),
+            });
+            setNewComment('');
+            loadComments(); // Recarrega os comentários para exibir o novo
         } catch (error) {
             console.error('Erro ao enviar comentário:', error);
         }
@@ -65,13 +64,13 @@ export default function Comments({ productId }) {
                 Comentários ({comments.length})
             </h3>
 
-            {/* Comment Form */}
+            {/* Formulário de Comentário */}
             {user ? (
                 <form onSubmit={handleCommentSubmit} className="mb-8 p-4 border rounded-xl bg-gray-50">
                     <Textarea
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Adicione seu comentário... 🎉"
+                        placeholder={`Comentando como ${profile?.full_name || user.email}...`}
                         className="mb-2 bg-white"
                         rows={3}
                     />
@@ -83,7 +82,7 @@ export default function Comments({ productId }) {
                                 </Button>
                             ))}
                         </div>
-                        <Button type="submit" disabled={submitting}>
+                        <Button type="submit" disabled={submitting || !newComment.trim()}>
                             {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                             <span className="ml-2">Enviar</span>
                         </Button>
@@ -92,11 +91,12 @@ export default function Comments({ productId }) {
             ) : (
                 <div className="mb-8 p-6 border-2 border-dashed rounded-xl text-center">
                     <p className="mb-4 text-gray-600">Você precisa estar logado para comentar.</p>
-                    <Button onClick={() => User.login()}>Fazer Login</Button>
+                    {/* Correção: Usar o router para navegar para a página de login */}
+                    <Button onClick={() => router.push('/Login')}>Fazer Login</Button>
                 </div>
             )}
 
-            {/* Comments List */}
+            {/* Lista de Comentários */}
             {loading ? (
                 <div className="flex justify-center items-center h-24">
                     <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
@@ -114,13 +114,14 @@ export default function Comments({ productId }) {
                                     className="flex gap-4 items-start"
                                 >
                                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center font-bold text-gray-600">
+                                        {/* Agora você precisaria buscar o nome do perfil associado ao user_id */}
                                         {comment.user_name ? comment.user_name.charAt(0).toUpperCase() : 'U'}
                                     </div>
                                     <div className="flex-1 bg-white p-4 rounded-xl shadow-sm border">
                                         <div className="flex justify-between items-center mb-1">
-                                            <p className="font-semibold text-gray-900">{comment.user_name}</p>
+                                            <p className="font-semibold text-gray-900">{comment.user_name || 'Usuário'}</p>
                                             <p className="text-xs text-gray-500">
-                                                {new Date(comment.created_date).toLocaleDateString('pt-BR')}
+                                                {new Date(comment.created_at).toLocaleDateString('pt-BR')}
                                             </p>
                                         </div>
                                         <p className="text-gray-700">{comment.content}</p>

@@ -8,21 +8,20 @@ export default function Recent() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadProducts = async () => {
+            setLoading(true);
+            try {
+                // A API /api/products por padrão já retorna os mais recentes
+                const response = await fetch('/api/products'); 
+                const data = await response.json();
+                setProducts(data);
+            } catch (error) {
+                console.error("Erro ao carregar produtos recentes:", error);
+            }
+            setLoading(false);
+        };
         loadProducts();
     }, []);
-
-    const loadProducts = async () => {
-    setLoading(true);
-    try {
-        const response = await fetch('/api/products');
-        const allProducts = await response.json();
-        // A API já retorna ordenado por mais recente, então não precisa filtrar
-        setProducts(allProducts);
-    } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
-    }
-    setLoading(false);
-};
 
     if (loading) {
         return (

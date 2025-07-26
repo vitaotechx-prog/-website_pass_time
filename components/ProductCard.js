@@ -81,15 +81,17 @@ export default function ProductCard({ product }) {
                         )}
                     </div>
 
-                   {/* Rodapé do Card (CORRIGIDO) */}
+                  {/* Rodapé do Card (CORRIGIDO) */}
                     <div className="mt-auto pt-2 border-t border-gray-100 space-y-2">
-                        <div className="flex items-center justify-center text-xs text-gray-500">
-                            <Clock className="w-3 h-3 mr-1.5" />
-                            <span>Postado {timeAgo(product.created_at)}</span>
-                        </div>
+                        {/* ADIÇÃO: Renderização condicional */}
+                        {product.created_at && (
+                            <div className="flex items-center justify-center text-xs text-gray-500">
+                                <Clock className="w-3 h-3 mr-1.5" />
+                                <span>Postado {postedTime}</span>
+                            </div>
+                        )}
                         <div className="text-center">
                             <span className="text-sm font-semibold text-blue-600 group-hover:underline">
-                            
                                 Ver Detalhes e Comentários
                             </span>
                         </div>

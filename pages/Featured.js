@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
-import { Loader2, Star } from "lucide-react"; // Mudei o ícone
+import { Loader2, Star } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function Featured() { // Mudei para Featured
+export default function Featured() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadProducts = async () => {
+            setLoading(true);
+            try {
+                // Alteração: Passar o filtro diretamente para a API
+                const response = await fetch('/api/products?filter=featured'); 
+                const featuredProducts = await response.json();
+                setProducts(featuredProducts);
+            } catch (error) {
+                console.error("Erro ao carregar produtos em destaque:", error);
+            }
+            setLoading(false);
+        };
         loadProducts();
     }, []);
-
-    const loadProducts = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch('/api/products');
-            const allProducts = await response.json();
-            // Filtra no lado do cliente
-            const featuredProducts = allProducts.filter(p => p.is_featured);
-            setProducts(featuredProducts);
-        } catch (error) {
-            console.error("Erro ao carregar produtos em destaque:", error);
-        }
-        setLoading(false);
-    };
 
     if (loading) {
         return (

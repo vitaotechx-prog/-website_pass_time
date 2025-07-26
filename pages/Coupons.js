@@ -8,22 +8,20 @@ export default function Coupons() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const loadProducts = async () => {
+            setLoading(true);
+            try {
+                // Alteração: Passar o filtro diretamente para a API
+                const response = await fetch('/api/products?filter=coupons');
+                const couponProducts = await response.json();
+                setProducts(couponProducts);
+            } catch (error) {
+                console.error("Erro ao carregar produtos com cupom:", error);
+            }
+            setLoading(false);
+        };
         loadProducts();
     }, []);
-
-    const loadProducts = async () => {
-    setLoading(true);
-    try {
-        const response = await fetch('/api/products');
-        const allProducts = await response.json();
-        // Filtra no lado do cliente
-        const couponProducts = allProducts.filter(p => p.has_coupon);
-        setProducts(couponProducts);
-    } catch (error) {
-        console.error("Erro ao carregar produtos com cupom:", error);
-    }
-    setLoading(false);
-};
 
     if (loading) {
         return (

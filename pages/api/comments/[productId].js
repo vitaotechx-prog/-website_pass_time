@@ -15,21 +15,25 @@ export default async function handler(req, res) {
   }
 
   if (req.method === 'POST') {
-    // Obter user autenticado
-    const { data: { user }, error: userError } = await  supabase.auth.getUser();
-    if (userError || !user) {
-      return res.status(401).json({ error: 'Acesso não autorizado.' });
-    } 
-    // Usar user.id para criar comentário
-    const { content } = req.body; // Apenas o conteúdo  é necessario do corpo da requisição
-    const {data, error } = await supabase
-      .from('comments')
-      .insert([{
-        productId: productId, content,
-        user_id: user_id // Usa o id do user da sessão
-         // O user_name será associado via JOIN com a tabela profiles na hora de buscar os comentários
-      }]);
-  if (error) return res.status(500).json({error: error.message});
+  // 1. Obter o usuário autenticado
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !user) {
+    return res.status(401).json({ error: 'Acesso não autorizado.' });
+  }
+
+  // 2. Usar o ID do usuário para criar o comentário
+  const { content } = req.body; // Apenas o conteúdo é necessário do corpo da requisição
+  const { data, error } = await supabase
+    .from('comments')
+    .insert([{
+        product_id: productId,
+        content,
+        user_id: user.id // <<-- Usar o ID do usuário da sessão
+        // O user_name será associado via JOIN com a tabela profiles na hora de buscar os comentários
+    }]);
+
+  if (error) return res.status(500).json({ error: error.message });
   return res.status(201).json(data);
   }
 }
