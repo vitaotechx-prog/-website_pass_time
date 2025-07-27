@@ -9,24 +9,25 @@ import { Search, Loader2, TrendingUp, Zap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from '@/lib/supabaseClient';
 
-// 1. BUSCA DE DADOS NO SERVIDOR (COM CACHE)
-// Esta função roda no servidor antes da página ser enviada para o usuário.
+// 1. BUSCA DE DADOS NO SERVIDOR (AGORA SEM CACHE)
+
 export async function getStaticProps() {
   const { data: products, error } = await supabase
     .from('products')
-    .select('*, categories (id, name)') //Alteração aqui * busca tudo em products id, name busca dados da tabela categories
+    // CORREÇÃO: A sintaxe para buscar dados de uma tabela relacionada
+    // através de uma chave estrangeira é esta:
+    .select('*, categories(id, name)') 
     .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Erro ao buscar produtos:', error);
-    return { props: { initialProducts: [] } }; // Retorna um array vazio em caso de erro
+    return { props: { initialProducts: [] } };
   }
 
   return {
     props: {
-      initialProducts: products, // Passa os produtos para o componente
+      initialProducts: products,
     },
-    // Revalida (busca novamente no banco) a cada 600 segundos (10 minutos)
     revalidate: 600,
   };
 }

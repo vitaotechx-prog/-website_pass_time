@@ -58,9 +58,13 @@ export default function Categories() {
         setCategoryCounts(counts);
     };
 
-    const filteredProducts = selectedCategory === "all" 
-        ? products 
-        : products.filter(product => product.category === selectedCategory);
+const filteredProducts = selectedCategory === "all" 
+    ? products 
+    // CORREÇÃO: O produto agora tem um objeto 'categories'.
+    // Precisamos verificar o nome dentro desse objeto.
+    : products.filter(product => 
+        product.categories && product.categories.name.toLowerCase() === selectedCategory
+      );
 
     if (loading) {
         return (
