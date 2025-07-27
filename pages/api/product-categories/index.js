@@ -2,6 +2,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 
+console.log("SUPABASE_SERVICE_KEY está definida?", !!process.env.SUPABASE_SERVICE_KEY);
+
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
