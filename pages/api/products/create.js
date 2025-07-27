@@ -20,6 +20,8 @@ export default async function handler(req, res) {
   // O productData agora inclui o 'category_id'
   const productData = req.body;
 
+  console.log("Payload recebido pela API:", productData);
+
   try {
     // A inserção agora é uma única operação
     const { data: newProductData, error: insertError } = await supabaseAdmin
