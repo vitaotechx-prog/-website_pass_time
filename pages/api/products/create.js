@@ -1,5 +1,8 @@
 import { supabase } from '@/lib/supabaseClient';
 
+// Lista de lojas permitidas, espelhando seu ENUM
+const allowedStores = ['amazon', 'mercadolivre', 'shopee', 'aliexpress', 'magalu', 'casasbahia', 'outros'];
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
@@ -11,6 +14,14 @@ export default async function handler(req, res) {
   }
 
   const productData = req.body;
+
+  // --- VALIDAÇÃO ADICIONADA AQUI ---
+  if (productData.store && !allowedStores.includes(productData.store)) {
+    return res.status(400).json({ 
+      error: `Valor de loja inválido: '${productData.store}'. Use um dos seguintes: ${allowedStores.join(', ')}`
+    });
+  }
+  // --- FIM DA VALIDAÇÃO ---
 
   try {
     const { data: newProductData, error: insertError } = await supabase
