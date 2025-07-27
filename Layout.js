@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createPageUrl } from "@/utils";
 import { useRouter } from 'next/router';
 import { useAuth } from "@/contexts/AuthContext";
+import SearchBar from "@/components/SearchBar";
 import { 
     Home, 
     Grid3X3, 
@@ -191,6 +192,9 @@ export default function Layout({ children }) {
                             </Sheet>
                         </div>
                     </div>
+                </div>
+                <div className="hidden md:flex flex-1 justify-center px-8">
+                    <SearchBar />
                 </div>
             </header>
                                         

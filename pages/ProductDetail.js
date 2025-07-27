@@ -70,10 +70,13 @@ export default function ProductDetail() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <Link href={createPageUrl("index")} className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
+             <button 
+                onClick={() => router.back()} 
+                className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
+            >
                 <ArrowLeft className="w-4 h-4" />
                 Voltar para ofertas
-            </Link>
+            </button>
             <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
                 {/* Coluna da Imagem */}
                 <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }}>

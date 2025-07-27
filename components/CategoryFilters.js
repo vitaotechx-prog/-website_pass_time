@@ -1,58 +1,10 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-    Smartphone, 
-    Home, 
-    Tv2,
-    Shirt, 
-    Dumbbell, 
-    Sparkles, 
-    BookOpen, 
-    Gamepad2, 
-    Car, 
-    Baby,
-    Grid3X3,
-    Drill,
-    ShoppingBasket,
-    Rocket
+// Importe os ícones e labels do novo arquivo de configuração
+import { categoryIcons, categoryLabels } from "@/config/categories";
+import { Grid3X3 } from "lucide-react"; // Mantenha este se não estiver no config
 
-} from "lucide-react";
-
-const categoryIcons = {
-    eletronicos: Smartphone,
-    eletrodomesticos: Tv2,
-    casa: Home,
-    moda: Shirt,
-    esporte: Dumbbell,
-    beleza: Sparkles,
-    livros: BookOpen,
-    games: Gamepad2,
-    automotivo: Car,
-    ferramentas: Drill,
-    brinquedos: Rocket,
-    mercado: ShoppingBasket,
-    infantil: Baby,
-    outros: Grid3X3
-
-};
-
-const categoryLabels = {
-    eletronicos: "Eletrônicos",
-    eletrodomesticos : "Eletrodomésticos",
-    casa: "Casa",
-    moda: "Moda",
-    esporte: "Esporte",
-    beleza: "Beleza",
-    livros: "Livros",
-    games: "Games",
-    brinquedos: "Brinquedos",
-    mercado: "Mercado",
-    infantil: "Infantil",
-    automotivo: "Automotivo",
-    ferramentas: "Ferramentas",
-    outros: "Outros"
-};
 
 export default function CategoryFilter({ 
     selectedCategory, 
@@ -60,6 +12,7 @@ export default function CategoryFilter({
     showCounts = false, 
     counts = {} 
 }) {
+    // A lógica interna do componente continua exatamente a mesma.
     const categories = Object.keys(categoryLabels);
 
     return (
