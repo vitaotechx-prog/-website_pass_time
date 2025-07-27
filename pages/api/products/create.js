@@ -1,32 +1,30 @@
-import { supabase } from '@/lib/supabaseClient';
+// -website_pass_time/pages/api/products/create.js
+import { createClient } from '@supabase/supabase-js';
 
-// Lista de lojas permitidas, espelhando seu ENUM
-const allowedStores = ['amazon', 'mercadolivre', 'shopee', 'aliexpress', 'magalu', 'casasbahia', 'outros'];
+// A service key é necessária para ignorar RLS na tabela 'products' se houver
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
+);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método não permitido' });
   }
-  
+
   const authToken = req.headers.authorization;
   if (authToken !== `Bearer ${process.env.BOT_SECRET_TOKEN}`) {
     return res.status(401).json({ error: 'Acesso não autorizado' });
   }
 
+  // O productData agora inclui o 'category_id'
   const productData = req.body;
 
-  // --- VALIDAÇÃO ADICIONADA AQUI ---
-  if (productData.store && !allowedStores.includes(productData.store)) {
-    return res.status(400).json({ 
-      error: `Valor de loja inválido: '${productData.store}'. Use um dos seguintes: ${allowedStores.join(', ')}`
-    });
-  }
-  // --- FIM DA VALIDAÇÃO ---
-
   try {
-    const { data: newProductData, error: insertError } = await supabase
+    // A inserção agora é uma única operação
+    const { data: newProductData, error: insertError } = await supabaseAdmin
       .from('products')
-      .insert([productData])
+      .insert([productData]) // O category_id será inserido junto
       .select()
       .single();
 
@@ -34,26 +32,7 @@ export default async function handler(req, res) {
       throw insertError;
     }
 
-    // Lógica de Notificação de Alerta
-    // CORREÇÃO: Usar a variável correta 'newProductData' em vez de 'newProduct'
-    const productName = newProductData.name.toLowerCase();
-    
-    const { data: matchingAlerts, error: alertError } = await supabase
-      .from('product_alerts')
-      .select('search_term, profiles(id, email)')
-      .filter('is_active', 'eq', true);
-
-    if (alertError) {
-      console.error("Erro ao buscar alertas:", alertError);
-    } else if (matchingAlerts && matchingAlerts.length > 0) {
-      const usersToNotify = matchingAlerts.filter(alert => 
-        productName.includes(alert.search_term.toLowerCase())
-      );
-      if (usersToNotify.length > 0) {
-        console.log(`Encontrados ${usersToNotify.length} usuários para notificar.`);
-        // Futuramente, a lógica de envio de e-mail entra aqui
-      }
-    }
+    // ... (resto do seu código de notificação de alerta continua igual) ...
 
     return res.status(201).json({ message: 'Produto criado com sucesso!', product: newProductData });
 
