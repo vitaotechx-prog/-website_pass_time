@@ -8,7 +8,7 @@ const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
-
+//Comentario só pra comitar
 export default async function handler(req, res) {
 
   // --- BLOCO DE TESTE ---
